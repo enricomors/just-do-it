@@ -24,4 +24,9 @@
         android:id="@+id/statistics_navigation_menu_item"
         android:icon="@drawable/ic_statistics"
         android:title="@string/statistics_title" />
+    <!-- New item for the calendar view -->
+    <item
+        android:id="@+id/calendar_view_navigation_menu_item"
+        android:icon="@drawable/logo"
+        android:title="@string/calendar_view_title" />
 </menu>

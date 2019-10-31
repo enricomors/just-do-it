@@ -45,6 +45,7 @@ public class TasksActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // associa l'activity al layout
         setContentView(R.layout.tasks_act);
 
         // Set up the toolbar.
