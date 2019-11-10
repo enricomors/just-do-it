@@ -29,7 +29,7 @@ import com.unibo.justdoit.util.ActivityUtils;
 import com.unibo.justdoit.util.EspressoIdlingResource;
 
 /**
- * Displays task details screen.
+ * Activity che mostra la schermata con i dettagli di ciascuna task
  */
 public class TaskDetailActivity extends AppCompatActivity {
 

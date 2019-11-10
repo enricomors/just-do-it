@@ -47,6 +47,14 @@ public final class Task {
     @ColumnInfo(name = "description")
     private final String mDescription;
 
+    @Nullable
+    @ColumnInfo(name = "date")
+    private final String mDate;
+
+    @Nullable
+    @ColumnInfo(name = "time")
+    private final String mTime;
+
     @ColumnInfo(name = "completed")
     private final boolean mCompleted;
 
@@ -57,8 +65,8 @@ public final class Task {
      * @param description description of the task
      */
     @Ignore
-    public Task(@Nullable String title, @Nullable String description) {
-        this(title, description, UUID.randomUUID().toString(), false);
+    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time) {
+        this(title, description, date, time, UUID.randomUUID().toString(), false);
     }
 
     /**
@@ -70,8 +78,8 @@ public final class Task {
      * @param id          id of the task
      */
     @Ignore
-    public Task(@Nullable String title, @Nullable String description, @NonNull String id) {
-        this(title, description, id, false);
+    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time, @NonNull String id) {
+        this(title, description, date, time, id, false);
     }
 
     /**
@@ -82,8 +90,8 @@ public final class Task {
      * @param completed   true if the task is completed, false if it's active
      */
     @Ignore
-    public Task(@Nullable String title, @Nullable String description, boolean completed) {
-        this(title, description, UUID.randomUUID().toString(), completed);
+    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time, boolean completed) {
+        this(title, description, date, time, UUID.randomUUID().toString(), completed);
     }
 
     /**
@@ -95,11 +103,13 @@ public final class Task {
      * @param id          id of the task
      * @param completed   true if the task is completed, false if it's active
      */
-    public Task(@Nullable String title, @Nullable String description,
-                @NonNull String id, boolean completed) {
+    public Task(@Nullable String title, @Nullable String description, @NonNull String id,
+                @Nullable String date, @Nullable String time, boolean completed) {
         mId = id;
         mTitle = title;
         mDescription = description;
+        mDate = date;
+        mTime = time;
         mCompleted = completed;
     }
 
@@ -127,6 +137,16 @@ public final class Task {
         return mDescription;
     }
 
+    @Nullable
+    public String getDate() {
+        return mDate;
+    }
+
+    @Nullable
+    public String getTime() {
+        return mTime;
+    }
+
     public boolean isCompleted() {
         return mCompleted;
     }
@@ -137,7 +157,9 @@ public final class Task {
 
     public boolean isEmpty() {
         return Strings.isNullOrEmpty(mTitle) &&
-               Strings.isNullOrEmpty(mDescription);
+                Strings.isNullOrEmpty(mDescription) &&
+                Strings.isNullOrEmpty(mDate) &&
+                Strings.isNullOrEmpty(mTime);
     }
 
     @Override
@@ -146,13 +168,15 @@ public final class Task {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
         return Objects.equal(mId, task.mId) &&
-               Objects.equal(mTitle, task.mTitle) &&
-               Objects.equal(mDescription, task.mDescription);
+                Objects.equal(mTitle, task.mTitle) &&
+                Objects.equal(mDescription, task.mDescription) &&
+                Objects.equal(mDate, task.mDate) &&
+                Objects.equal(mTime, task.mTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(mId, mTitle, mDescription);
+        return Objects.hashCode(mId, mTitle, mDescription, mDate, mTime);
     }
 
     @Override

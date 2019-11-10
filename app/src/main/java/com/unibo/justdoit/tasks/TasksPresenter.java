@@ -31,6 +31,11 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
+ * Questa classe implementa il livello 'Presenter' per quanto riguarda le task. In pratica il
+ * livello presenter è quello che fa da intermediario tra la View e il Model, recuperando dati dal
+ * model e restituendoli in versione formattata alla View. Inoltre, a differenza del Controller
+ * nel pattern MVC, il Presenter si occupa anche di definire ciò che succede quando l'utente
+ * interagisce con la View.
  * Listens to user actions from the UI ({@link TasksFragment}), retrieves the data and updates the
  * UI as required.
  */

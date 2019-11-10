@@ -30,7 +30,7 @@ import com.unibo.justdoit.util.ActivityUtils;
 import com.unibo.justdoit.util.EspressoIdlingResource;
 
 /**
- * Displays an add or edit task screen.
+ * Mostra la schermata per aggiungere o modificare una task esistente, in base all'intent.
  */
 public class AddEditTaskActivity extends AppCompatActivity {
 
@@ -42,6 +42,10 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
     private ActionBar mActionBar;
 
+    /**
+     * Carica il proprio layout da res/layout/addtask_act.xml
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

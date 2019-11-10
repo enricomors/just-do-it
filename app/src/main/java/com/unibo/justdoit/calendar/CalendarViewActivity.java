@@ -1,23 +1,8 @@
-/*
- * Copyright 2016, The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.unibo.justdoit.calendar;
 
-package com.unibo.justdoit.statistics;
-
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
@@ -25,36 +10,49 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.ActionMenuView;
+import android.widget.CalendarView;
+import android.widget.TextView;
+
 
 import com.unibo.justdoit.Injection;
 import com.unibo.justdoit.R;
-import com.unibo.justdoit.calendar.CalendarViewActivity;
-import com.unibo.justdoit.tasks.TasksActivity;
 import com.unibo.justdoit.util.ActivityUtils;
 
-/**
- * Show statistics for tasks.
- */
-public class StatisticsActivity extends AppCompatActivity {
+import java.util.Calendar;
 
+/**
+ * Activity per visualizzare la vista del Calendario con tutte le icone rappresentanti le task.
+ */
+public class CalendarViewActivity extends AppCompatActivity {
+
+    //drawer
     private DrawerLayout mDrawerLayout;
 
+    private CalendarView calendar;
+
+    private TextView dateView;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.statistics_act);
+        // set up the view for the activity
+        setContentView(R.layout.calendarview_act);
+        calendar = (CalendarView) findViewById(R.id.calendar);
+        dateView = (TextView) findViewById(R.id.date_view);
 
-        // Set up the toolbar.
+        // set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(R.string.statistics_title);
+        ab.setTitle(R.string.calendar_title);
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        // Set up the navigation drawer.
+        // set up the navigation drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -62,23 +60,25 @@ public class StatisticsActivity extends AppCompatActivity {
             setupDrawerContent(navigationView);
         }
 
-        StatisticsFragment statisticsFragment = (StatisticsFragment) getSupportFragmentManager()
+        // set up the fragment
+        CalendarViewFragment calendarViewFragment = (CalendarViewFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
-        if (statisticsFragment == null) {
-            statisticsFragment = StatisticsFragment.newInstance();
+        if (calendarViewFragment == null) {
+            calendarViewFragment = CalendarViewFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    statisticsFragment, R.id.contentFrame);
+                    calendarViewFragment, R.id.contentFrame);
         }
 
-        new StatisticsPresenter(
-                Injection.provideTasksRepository(getApplicationContext()), statisticsFragment);
+        // set up the presenter
+        // new CalendarViewPresenter(
+         //       Injection.provideTasksRepository(getApplicationContext()), calendarViewFragment);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Open the navigation drawer when the home icon is selected from the toolbar.
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -91,23 +91,25 @@ public class StatisticsActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                            case R.id.list_navigation_menu_item:
-                                NavUtils.navigateUpFromSameTask(StatisticsActivity.this);
-                                break;
-                            case R.id.statistics_navigation_menu_item:
+                            case R.id.calendar_view_navigation_menu_item:
                                 // Do nothing, we're already on that screen
                                 break;
-                            case R.id.calendar_view_navigation_menu_item:
-                                // Apre activity per calendar view
+                            case R.id.statistics_navigation_menu_item:
+                                // Navigate to Statistics activity
+                                break;
+                            case R.id.list_navigation_menu_item:
+                                NavUtils.navigateUpFromSameTask(CalendarViewActivity.this);
                                 break;
                             default:
                                 break;
                         }
-                        // Close the navigation drawer when an item is selected.
+                        // Close navigation drawer when the item is selected
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         return true;
                     }
-                });
+                }
+        );
     }
+
 }

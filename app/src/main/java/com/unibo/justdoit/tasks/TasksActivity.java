@@ -30,10 +30,24 @@ import android.view.MenuItem;
 
 import com.unibo.justdoit.Injection;
 import com.unibo.justdoit.R;
+import com.unibo.justdoit.calendar.CalendarViewActivity;
 import com.unibo.justdoit.statistics.StatisticsActivity;
 import com.unibo.justdoit.util.ActivityUtils;
 import com.unibo.justdoit.util.EspressoIdlingResource;
 
+/**
+ * In questa classe troviamo il codice che definisce la logica dell'activity principale della nostra
+ * applicazione. Il layout per questa activity è definito in 'res/layout/task_act.xml'. L'activity
+ * presenta una toolbar e un layout Drawer, che mostra un menu da cui è possibile scegliere se
+ * visualizzare la schermata con tutte le task (quella attuale), la schermata delle statistiche
+ * oppure la schermata con il calendario contenente le date di scadenza di tutte le task. Le azioni
+ * per il Drawer sono definite in 'res/menu/drawer_actions.xml'.
+ * Notiamo come per la visualizzazione delle task venga utilizzato un Fragment, in particolare
+ * un istanza della classe TasksFragment (definita in 'tasks').
+ *
+ * L'activity estende la classe AppCompatActivity, necessaria per usare la Toolbar della libreria di
+ * supporto v7 appcompat
+ */
 public class TasksActivity extends AppCompatActivity {
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
@@ -42,6 +56,13 @@ public class TasksActivity extends AppCompatActivity {
 
     private TasksPresenter mTasksPresenter;
 
+    /**
+     * Lifecycle callback, chiamato quando l'activity viene creata. Associa il layout 'task_act' a
+     * questa activity, setta la Toolbar, setta il layout per il Drawer, setta il fragment per
+     * mostrare tutte le task, crea il presenter (WHAT IS IS?), e infine ripristina, se presente, lo
+     * stato dell'istanza precedente.
+     * @param savedInstanceState stato salvato in precedenza
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +71,9 @@ public class TasksActivity extends AppCompatActivity {
 
         // Set up the toolbar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Set a Toolbar to act as the ActionBar for this Activity window.
         setSupportActionBar(toolbar);
+        // recupera l'istanza di ActionBar
         ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
@@ -84,6 +107,10 @@ public class TasksActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Chiamato quando è presente uno stato di un'istanza precedente dell'activity.
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
@@ -102,6 +129,10 @@ public class TasksActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Implementa il comportamento del Drawer quando l'utente clicca su uno degli elementi
+     * @param navigationView
+     */
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -112,9 +143,15 @@ public class TasksActivity extends AppCompatActivity {
                                 // Do nothing, we're already on that screen
                                 break;
                             case R.id.statistics_navigation_menu_item:
-                                Intent intent =
+                                Intent statIntent =
                                         new Intent(TasksActivity.this, StatisticsActivity.class);
-                                startActivity(intent);
+                                startActivity(statIntent);
+                                break;
+                            case R.id.calendar_view_navigation_menu_item:
+                                // Apre activity per calendar view
+                                Intent calIntent =
+                                        new Intent(TasksActivity.this, CalendarViewActivity.class);
+                                startActivity(calIntent);
                                 break;
                             default:
                                 break;
