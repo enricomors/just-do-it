@@ -40,8 +40,14 @@ public class TasksRemoteDataSource implements TasksDataSource {
 
     static {
         TASKS_SERVICE_DATA = new LinkedHashMap<>(2);
-        addTask("Build tower in Pisa", "Ground looks good, no foundation work required.");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!");
+        addTask("Build tower in Pisa",
+                "Ground looks good, no foundation work required.",
+                "10:00",
+                "01/01/2020");
+        addTask("Finish bridge in Tacoma",
+                "Found awesome girders at half the cost!",
+                "20:00",
+                "01/12/2019");
     }
 
     public static TasksRemoteDataSource getInstance() {
@@ -54,8 +60,8 @@ public class TasksRemoteDataSource implements TasksDataSource {
     // Prevent direct instantiation.
     private TasksRemoteDataSource() {}
 
-    private static void addTask(String title, String description) {
-        Task newTask = new Task(title, description);
+    private static void addTask(String title, String description, String time, String date) {
+        Task newTask = new Task(title, description, time, date);
         TASKS_SERVICE_DATA.put(newTask.getId(), newTask);
     }
 
@@ -102,7 +108,8 @@ public class TasksRemoteDataSource implements TasksDataSource {
 
     @Override
     public void completeTask(@NonNull Task task) {
-        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getId(), true);
+        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getDate(),
+                task.getTime(), task.getId(), true);
         TASKS_SERVICE_DATA.put(task.getId(), completedTask);
     }
 
@@ -114,7 +121,8 @@ public class TasksRemoteDataSource implements TasksDataSource {
 
     @Override
     public void activateTask(@NonNull Task task) {
-        Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getId());
+        Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getDate(),
+                task.getTime(), task.getId());
         TASKS_SERVICE_DATA.put(task.getId(), activeTask);
     }
 

@@ -133,6 +133,24 @@ public final class Task {
     }
 
     @Nullable
+    public String getDateForList() {
+        if (!Strings.isNullOrEmpty(mDate)) {
+            return mDate;
+        } else {
+            return "No date specified";
+        }
+    }
+
+    @Nullable
+    public String getTimeForList() {
+        if (!Strings.isNullOrEmpty(mTime)) {
+            return mTime;
+        } else {
+            return "No time specified";
+        }
+    }
+
+    @Nullable
     public String getDescription() {
         return mDescription;
     }

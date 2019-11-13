@@ -44,6 +44,8 @@ import com.unibo.justdoit.addedittask.AddEditTaskActivity;
 import com.unibo.justdoit.data.Task;
 import com.unibo.justdoit.taskdetail.TaskDetailActivity;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,6 +212,10 @@ public class TasksFragment extends Fragment implements TasksContract.View {
      * Listener for clicks on tasks in the ListView.
      */
     TaskItemListener mItemListener = new TaskItemListener() {
+        /**
+         * Richiama il metodo del presenter per aprire i dettagli della task cliccata
+         * @param clickedTask la task cliccata dall'utente
+         */
         @Override
         public void onTaskClick(Task clickedTask) {
             mPresenter.openTaskDetails(clickedTask);
@@ -314,6 +320,10 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);
     }
 
+    /**
+     * Mostra la UI con i dettagli della task cliccata dall'utente
+     * @param taskId id della task
+     */
     @Override
     public void showTaskDetailsUi(String taskId) {
         // in it's own Activity, since it makes more sense that way and it gives us the flexibility
@@ -386,6 +396,13 @@ public class TasksFragment extends Fragment implements TasksContract.View {
             return i;
         }
 
+        /**
+         * Setta la view per le singole task
+         * @param i indice per le task
+         * @param view
+         * @param viewGroup
+         * @return
+         */
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             View rowView = view;
@@ -396,8 +413,14 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
             final Task task = getItem(i);
 
-            TextView titleTV = (TextView) rowView.findViewById(R.id.title);
+            TextView titleTV = (TextView) rowView.findViewById(R.id.list_title);
             titleTV.setText(task.getTitleForList());
+
+            TextView dateTV = (TextView) rowView.findViewById(R.id.list_date);
+            dateTV.setText(task.getDateForList());
+
+            TextView timeTV = (TextView) rowView.findViewById(R.id.list_time);
+            timeTV.setText(task.getDateForList());
 
             CheckBox completeCB = (CheckBox) rowView.findViewById(R.id.complete);
 
@@ -433,6 +456,10 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         }
     }
 
+    /**
+     * Interfaccia per gli elementi delle task con i metodi per gestire gli eventi di click sulle
+     * singole task
+     */
     public interface TaskItemListener {
 
         void onTaskClick(Task clickedTask);

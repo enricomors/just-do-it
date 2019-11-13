@@ -192,6 +192,10 @@ public class TasksPresenter implements TasksContract.Presenter {
         mTasksView.showAddTask();
     }
 
+    /**
+     * Mostra i dettagli della task cliccata dall'utente
+     * @param requestedTask task cliccata
+     */
     @Override
     public void openTaskDetails(@NonNull Task requestedTask) {
         checkNotNull(requestedTask, "requestedTask cannot be null!");
