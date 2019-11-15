@@ -33,6 +33,10 @@ import com.unibo.justdoit.util.EspressoIdlingResource;
  */
 public class TaskDetailActivity extends AppCompatActivity {
 
+    /**
+     * L'id della task di cui visualizzare i dettagli, ricevuta dall'Intent creato da TaskFragment
+     * in showTaskDetailsUi
+     */
     public static final String EXTRA_TASK_ID = "TASK_ID";
 
     @Override
