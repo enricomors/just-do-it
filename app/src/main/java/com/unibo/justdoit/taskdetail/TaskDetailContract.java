@@ -38,6 +38,14 @@ public interface TaskDetailContract {
 
         void showDescription(String description);
 
+        void hideDate();
+
+        void showDate(String date);
+
+        void hideTime();
+
+        void showTime(String Time);
+
         void showCompletionStatus(boolean complete);
 
         void showEditTask(String taskId);

@@ -58,6 +58,10 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
 
     private TextView mDetailDescription;
 
+    private TextView mDetailDate;
+
+    private TextView mDetailTime;
+
     private CheckBox mDetailCompleteStatus;
 
     public static TaskDetailFragment newInstance(@Nullable String taskId) {
@@ -82,6 +86,8 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
         setHasOptionsMenu(true);
         mDetailTitle = (TextView) root.findViewById(R.id.task_detail_title);
         mDetailDescription = (TextView) root.findViewById(R.id.task_detail_description);
+        mDetailDate = (TextView) root.findViewById(R.id.task_detail_date);
+        mDetailTime = (TextView) root.findViewById(R.id.task_detail_time);
         mDetailCompleteStatus = (CheckBox) root.findViewById(R.id.task_detail_complete);
 
         // Set up floating action button
@@ -134,6 +140,16 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
     @Override
     public void hideTitle() {
         mDetailTitle.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideDate() {
+        mDetailDate.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideTime() {
+        mDetailTime.setVisibility(View.GONE);
     }
 
     @Override
@@ -197,6 +213,20 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
     public void showTitle(@NonNull String title) {
         mDetailTitle.setVisibility(View.VISIBLE);
         mDetailTitle.setText(title);
+    }
+
+    @Override
+    public void showDate(String date) {
+        mDetailDate.setVisibility(View.VISIBLE);
+        mDetailDate.setText(date);
+        System.out.println("date= " + date);
+    }
+
+    @Override
+    public void showTime(String time) {
+        mDetailTime.setVisibility(View.VISIBLE);
+        mDetailTime.setText(time);
+        System.out.println("time= " + time);
     }
 
     @Override

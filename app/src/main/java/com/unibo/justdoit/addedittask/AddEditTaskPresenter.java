@@ -96,6 +96,8 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         if (mAddTaskView.isActive()) {
             mAddTaskView.setTitle(task.getTitle());
             mAddTaskView.setDescription(task.getDescription());
+            mAddTaskView.setDate(task.getDate());
+            mAddTaskView.setTime(task.getTime());
         }
         mIsDataMissing = false;
     }
@@ -126,6 +128,7 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
      */
     private void createTask(String title, String description, String date, String time) {
         Task newTask = new Task(title, description, date, time);
+        System.out.println("Created " + newTask.toString());
         if (newTask.isEmpty()) {
             mAddTaskView.showEmptyTaskError();
         } else {

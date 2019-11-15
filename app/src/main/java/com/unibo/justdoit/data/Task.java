@@ -103,8 +103,8 @@ public final class Task {
      * @param id          id of the task
      * @param completed   true if the task is completed, false if it's active
      */
-    public Task(@Nullable String title, @Nullable String description, @NonNull String id,
-                @Nullable String date, @Nullable String time, boolean completed) {
+    public Task(@Nullable String title, @Nullable String description, @Nullable String date,
+                @Nullable String time, @NonNull String id, boolean completed) {
         mId = id;
         mTitle = title;
         mDescription = description;
@@ -199,6 +199,7 @@ public final class Task {
 
     @Override
     public String toString() {
-        return "Task with title " + mTitle;
+        return "Task with title " + mTitle + ", description " + mDescription + ", date " + mDate +
+                ", time " + mTime;
     }
 }

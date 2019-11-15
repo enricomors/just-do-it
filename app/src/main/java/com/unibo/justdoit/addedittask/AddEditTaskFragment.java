@@ -129,7 +129,7 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                 String formattedDate = day + "/" + month + "/" + year;
-                                mDate.setText(formattedDate);
+                                setDate(formattedDate);
                             }
                         }, year, month, day);
                 datePickerDialog.show();
@@ -148,7 +148,8 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                                 String formattedTime = String.format("%02d:%02d", hour, minute);
-                                mTime.setText(formattedTime);
+                                setTime(formattedTime);
+                                System.out.println(formattedTime);
                             }
                         }, hour, minute, true);
                 timePickerDialog.show();

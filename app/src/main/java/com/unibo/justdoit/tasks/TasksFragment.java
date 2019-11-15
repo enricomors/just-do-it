@@ -416,12 +416,6 @@ public class TasksFragment extends Fragment implements TasksContract.View {
             TextView titleTV = (TextView) rowView.findViewById(R.id.list_title);
             titleTV.setText(task.getTitleForList());
 
-            TextView dateTV = (TextView) rowView.findViewById(R.id.list_date);
-            dateTV.setText(task.getDateForList());
-
-            TextView timeTV = (TextView) rowView.findViewById(R.id.list_time);
-            timeTV.setText(task.getDateForList());
-
             CheckBox completeCB = (CheckBox) rowView.findViewById(R.id.complete);
 
             // Active/completed task UI

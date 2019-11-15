@@ -36,6 +36,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
 
     private final TaskDetailContract.View mTaskDetailView;
 
+    /** Id della task da mostrare */
     @Nullable
     private String mTaskId;
 
@@ -129,6 +130,10 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
     private void showTask(@NonNull Task task) {
         String title = task.getTitle();
         String description = task.getDescription();
+        String date = task.getDate();
+        String time = task.getTime();
+
+        System.out.println(task.toString());
 
         if (Strings.isNullOrEmpty(title)) {
             mTaskDetailView.hideTitle();
@@ -141,6 +146,19 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         } else {
             mTaskDetailView.showDescription(description);
         }
+
+        if (Strings.isNullOrEmpty(date)) {
+            mTaskDetailView.hideDate();
+        } else {
+            mTaskDetailView.showDate(date);
+        }
+
+        if (Strings.isNullOrEmpty(time)) {
+            mTaskDetailView.hideTime();
+        } else {
+            mTaskDetailView.showTime(time);
+        }
+
         mTaskDetailView.showCompletionStatus(task.isCompleted());
     }
 }
