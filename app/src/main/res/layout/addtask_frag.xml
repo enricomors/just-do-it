@@ -42,6 +42,46 @@
             android:gravity="top"
             android:hint="@string/description_hint" />
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/set_date_button"
+                android:layout_width="160dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="left|center_vertical"
+                android:text="Set Date"
+                android:textColor="@color/colorPrimaryText"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/set_time_button"
+                android:layout_width="160dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="left|center_vertical"
+                android:text="Set Time"
+                android:textColor="@color/colorPrimaryText"/>
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
 

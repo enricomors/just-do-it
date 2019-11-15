@@ -17,6 +17,10 @@
 package com.unibo.justdoit.addedittask;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,9 +30,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.unibo.justdoit.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,6 +54,18 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     private TextView mTitle;
 
     private TextView mDescription;
+
+    private Button mDate;
+
+    private Button mTime;
+
+    private TimePickerDialog timePickerDialog;
+
+    private DatePickerDialog datePickerDialog;
+
+    int year, month, day, hour, minute;
+
+    Calendar calendar;
 
     public static AddEditTaskFragment newInstance() {
         return new AddEditTaskFragment();
@@ -74,7 +96,11 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.saveTask(mTitle.getText().toString(), mDescription.getText().toString());
+                mPresenter.saveTask(
+                        mTitle.getText().toString(),
+                        mDescription.getText().toString(),
+                        mDate.getText().toString(),
+                        mTime.getText().toString());
             }
         });
     }
@@ -86,6 +112,48 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         View root = inflater.inflate(R.layout.addtask_frag, container, false);
         mTitle = (TextView) root.findViewById(R.id.add_task_title);
         mDescription = (TextView) root.findViewById(R.id.add_task_description);
+        mDate = (Button) root.findViewById(R.id.set_date_button);
+        mTime = (Button) root.findViewById(R.id.set_time_button);
+
+        // click listener per mDate
+        mDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                // opens a dialog to select date
+                datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                String formattedDate = day + "/" + month + "/" + year;
+                                mDate.setText(formattedDate);
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
+        // click listener per mTime
+        mTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                minute = calendar.get(Calendar.MINUTE);
+                // opens a dialog to select time
+                timePickerDialog = new TimePickerDialog(getActivity(),
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                String formattedTime = String.format("%02d:%02d", hour, minute);
+                                mTime.setText(formattedTime);
+                            }
+                        }, hour, minute, true);
+                timePickerDialog.show();
+            }
+        });
         setHasOptionsMenu(true);
         return root;
     }
@@ -112,7 +180,23 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     }
 
     @Override
+    public void setDate(String date) {
+        mDate.setText(date);
+    }
+
+    @Override
+    public void setTime(String time) {
+        mTime.setText(time);
+    }
+
+    @Override
     public boolean isActive() {
         return isAdded();
     }
+
 }
+
+
+
+
+

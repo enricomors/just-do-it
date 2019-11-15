@@ -34,6 +34,10 @@ public interface AddEditTaskContract {
 
         void setDescription(String description);
 
+        void setDate(String date);
+
+        void setTime(String time);
+
         boolean isActive();
     }
 
