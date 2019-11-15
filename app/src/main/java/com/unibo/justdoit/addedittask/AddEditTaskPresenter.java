@@ -67,12 +67,18 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         }
     }
 
+    /**
+     * Salva la task, chiamando createTask se la task è nuova, altrimenti chiamando updateTask
+     * se la task è già esistente.
+     * @param title
+     * @param description
+     */
     @Override
-    public void saveTask(String title, String description) {
+    public void saveTask(String title, String description, String date, String time) {
         if (isNewTask()) {
-            createTask(title, description);
+            createTask(title, description, date, time);
         } else {
-            updateTask(title, description);
+            updateTask(title, description, date, time);
         }
     }
 
@@ -111,21 +117,35 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         return mTaskId == null;
     }
 
-    private void createTask(String title, String description) {
-        Task newTask = new Task(title, description);
+    /**
+     * Crea una nuova task
+     * @param title
+     * @param description
+     * @param date
+     * @param time
+     */
+    private void createTask(String title, String description, String date, String time) {
+        Task newTask = new Task(title, description, date, time);
         if (newTask.isEmpty()) {
             mAddTaskView.showEmptyTaskError();
         } else {
             mTasksRepository.saveTask(newTask);
-            mAddTaskView.showTasksList();
+            mAddTaskView.showTasksList(); // after saving the task, show the list
         }
     }
 
-    private void updateTask(String title, String description) {
+    /**
+     * Aggiorna una task esistente
+     * @param title
+     * @param description
+     * @param date
+     * @param time
+     */
+    private void updateTask(String title, String description, String date, String time) {
         if (isNewTask()) {
             throw new RuntimeException("updateTask() was called but task is new.");
         }
-        mTasksRepository.saveTask(new Task(title, description, mTaskId));
+        mTasksRepository.saveTask(new Task(title, description, date, time, mTaskId));
         mAddTaskView.showTasksList(); // After an edit, go back to the list.
     }
 }

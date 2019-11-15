@@ -39,7 +39,7 @@ public interface AddEditTaskContract {
 
     interface Presenter extends BasePresenter {
 
-        void saveTask(String title, String description);
+        void saveTask(String title, String description, String date, String time);
 
         void populateTask();
 
