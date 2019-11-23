@@ -22,10 +22,15 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -111,6 +116,14 @@ public final class Task {
         mDate = date;
         mTime = time;
         mCompleted = completed;
+    }
+
+    @Nullable
+    public long getTaskDeadline() throws ParseException {
+        String deadline = mDate + ' ' + mTime;
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date date = (Date) formatter.parse(deadline);
+        return date.getTime();
     }
 
     @NonNull
