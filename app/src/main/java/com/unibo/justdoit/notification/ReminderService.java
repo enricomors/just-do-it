@@ -15,14 +15,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.unibo.justdoit.Injection;
 import com.unibo.justdoit.data.Task;
+import com.unibo.justdoit.data.source.TasksDataSource;
+import com.unibo.justdoit.data.source.TasksRepository;
 import com.unibo.justdoit.util.Helper;
 
 import java.sql.Time;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ReminderService extends Service {
 
@@ -33,8 +40,10 @@ public class ReminderService extends Service {
     public static final String ALARM_TRIGGERED = "ALARM_TRIGGERED";
 
     private boolean alreadyRunning = false;
-
     private final IBinder mBinder = new ReminderServiceBinder();
+
+    private final TasksRepository mTasksRepository =
+            Injection.provideTasksRepository(getApplicationContext());
 
     private NotificationManager mNotificationManager;
     private AlarmManager alarmManager;
@@ -81,17 +90,54 @@ public class ReminderService extends Service {
                 // chiama metodo setAlarmForTask() per settare alarm per questa task
         } else {
             // se il servizio è stato avviato per la prima volta
-            // chiama reloadAlarmsFromDB()
+            if (!alreadyRunning) {
+                reloadAlarmsFromDB();
+                alreadyRunning = true;
+                Log.i(TAG, "Service was started the first time.");
+            } else {
+                Log.i(TAG, "Service was already running.");
+            }
         }
-
         return START_NOT_STICKY; // do not recreate service if the phone runs out of memory
     }
 
     private void handleAlarm(Task task) {
         String title = task.getTitle();
-
         // crea la notifica
+        NotificationCompat.Builder nb = helper.getNotification(title,
+                "Deadline is approaching",
+                task);
         // richiama il notification manager
+        helper.getManager().notify(Integer.parseInt(task.getId()), nb.build());
+    }
+
+    public void reloadAlarmsFromDB() {
+        mNotificationManager.cancelAll(); // cancella tutti gli allarmi
+        // recupera dal database le task per cui bisogna settare una notifica, ovvero quelle non
+        // ancora completate
+        mTasksRepository.getTasks(new TasksDataSource.LoadTasksCallback() {
+            @Override
+            public void onTasksLoaded(List<Task> tasks) {
+                // lista delle task per cui settare il reminder
+                List<Task> tasksToRemind = new ArrayList<Task>();
+                // riempie la lista e setta l'allarme per le task attive
+                for (Task task : tasks) {
+                    if (task.isActive()) {
+                        tasksToRemind.add(task);
+                        setAlarmForTask(task);
+                    }
+                }
+                if (tasksToRemind.size() == 0) {
+                    Log.i(TAG, "No alarms set");
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // come gestire questo callback?
+            }
+        });
+
     }
 
     private void setAlarmForTask(Task task) {
@@ -138,6 +184,25 @@ public class ReminderService extends Service {
 
     public void processTask(Task changedTask) {
 
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this,
+                Integer.parseInt(changedTask.getId()),
+                new Intent(this, ReminderService.class),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // controlla che l'allarme sia stato settato per questa task
+        if (alarmIntent != null) {
+            // 1. Cancella il vecchio allarme
+            alarmManager.cancel(alarmIntent);
+            Log.i(TAG, "Alarm of task " + changedTask.getTitle() + " cancelled. (id =" +changedTask.getId());
+
+            // 2. Cancella la vecchia notifica se esistente
+            mNotificationManager.cancel(Integer.parseInt(changedTask.getId()));
+            Log.i(TAG, "Notification of task " + changedTask.getTitle() + " deleted (if existed). (id="+changedTask.getId()+")");
+        } else {
+            Log.i(TAG, "No alarm found for " + changedTask.getTitle() + " (alarm id: " + changedTask.getId() + ")");
+        }
+
+        setAlarmForTask(changedTask);
     }
 
     public class ReminderServiceBinder extends Binder {
