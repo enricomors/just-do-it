@@ -103,6 +103,16 @@ public class TasksRemoteDataSource implements TasksDataSource {
     }
 
     @Override
+    public void getNextDueTask(@NonNull long today) {
+
+    }
+
+    @Override
+    public void getTasksToRemind(@NonNull long today) {
+
+    }
+
+    @Override
     public void saveTask(@NonNull Task task) {
         TASKS_SERVICE_DATA.put(task.getId(), task);
     }

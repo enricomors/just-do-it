@@ -113,6 +113,16 @@ public class TasksLocalDataSource implements TasksDataSource {
     }
 
     @Override
+    public void getNextDueTask(@NonNull long today) {
+
+    }
+
+    @Override
+    public void getTasksToRemind(@NonNull long today) {
+
+    }
+
+    @Override
     public void saveTask(@NonNull final Task task) {
         checkNotNull(task);
         Runnable saveRunnable = new Runnable() {

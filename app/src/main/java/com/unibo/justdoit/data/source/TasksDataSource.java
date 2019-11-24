@@ -50,6 +50,12 @@ public interface TasksDataSource {
 
     void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback);
 
+    void getNextDueTask(@NonNull long today);
+
+    // utilizzano anche una lista di "id bloccati" che sono quelli corrispondenti
+    // ad una task per cui l'utente è già stato notificato
+    void getTasksToRemind(@NonNull long today);
+
     void saveTask(@NonNull Task task);
 
     void completeTask(@NonNull Task task);

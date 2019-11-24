@@ -254,6 +254,16 @@ public class TasksRepository implements TasksDataSource {
     }
 
     @Override
+    public void getNextDueTask(@NonNull long today) {
+
+    }
+
+    @Override
+    public void getTasksToRemind(@NonNull long today) {
+
+    }
+
+    @Override
     public void refreshTasks() {
         mCacheIsDirty = true;
     }

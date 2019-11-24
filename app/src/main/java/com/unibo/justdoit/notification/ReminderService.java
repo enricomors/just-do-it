@@ -113,8 +113,13 @@ public class ReminderService extends Service {
 
     public void reloadAlarmsFromDB() {
         mNotificationManager.cancelAll(); // cancella tutti gli allarmi
-        // recupera dal database le task per cui bisogna settare una notifica, ovvero quelle non
-        // ancora completate
+
+        // qui l'altra app recupera dal database quelle task per cui settare un'alarm, che sono:
+        // quelle non completate e per cui il "reminder time" è settato prima della data/ora attuale
+        // la prossima task in scadenza
+
+        // qui restituiamo soltanto le task non completate, non c'è un controllo sulla data di
+        // scadenza.
         mTasksRepository.getTasks(new TasksDataSource.LoadTasksCallback() {
             @Override
             public void onTasksLoaded(List<Task> tasks) {
