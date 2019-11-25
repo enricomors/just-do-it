@@ -22,7 +22,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -60,70 +59,67 @@ public final class Task {
     @ColumnInfo(name = "time")
     private final String mTime;
 
+    @Nullable
+    @ColumnInfo(name = "deadline")
+    private final long mDeadline;
+
     @ColumnInfo(name = "completed")
     private final boolean mCompleted;
 
     /**
      * Use this constructor to create a new active Task.
-     *
-     * @param title       title of the task
+     *  @param title       title of the task
      * @param description description of the task
+     * @param deadline
      */
     @Ignore
-    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time) {
-        this(title, description, date, time, UUID.randomUUID().toString(), false);
+    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time, long deadline) {
+        this(title, description, date, time, UUID.randomUUID().toString(), deadline, false);
     }
 
     /**
      * Use this constructor to create an active Task if the Task already has an id (copy of another
      * Task).
-     *
-     * @param title       title of the task
+     *  @param title       title of the task
      * @param description description of the task
      * @param id          id of the task
+     * @param deadline
      */
     @Ignore
-    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time, @NonNull String id) {
-        this(title, description, date, time, id, false);
+    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time, @NonNull String id, long deadline) {
+        this(title, description, date, time, id, deadline, false);
     }
 
     /**
      * Use this constructor to create a new completed Task.
-     *
-     * @param title       title of the task
+     *  @param title       title of the task
      * @param description description of the task
      * @param completed   true if the task is completed, false if it's active
+     * @param deadline
      */
     @Ignore
-    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time, boolean completed) {
-        this(title, description, date, time, UUID.randomUUID().toString(), completed);
+    public Task(@Nullable String title, @Nullable String description, @Nullable String date, @Nullable String time, boolean completed, long deadline) {
+        this(title, description, date, time, UUID.randomUUID().toString(), deadline, completed);
     }
 
     /**
      * Use this constructor to specify a completed Task if the Task already has an id (copy of
      * another Task).
-     *
-     * @param title       title of the task
+     *  @param title       title of the task
      * @param description description of the task
      * @param id          id of the task
+     * @param deadline
      * @param completed   true if the task is completed, false if it's active
      */
     public Task(@Nullable String title, @Nullable String description, @Nullable String date,
-                @Nullable String time, @NonNull String id, boolean completed) {
+                @Nullable String time, @NonNull String id, long deadline, boolean completed) {
         mId = id;
         mTitle = title;
         mDescription = description;
         mDate = date;
         mTime = time;
+        mDeadline = deadline;
         mCompleted = completed;
-    }
-
-    @Nullable
-    public long getTaskDeadline() throws ParseException {
-        String deadline = mDate + ' ' + mTime;
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date date = (Date) formatter.parse(deadline);
-        return date.getTime();
     }
 
     @NonNull
@@ -176,6 +172,11 @@ public final class Task {
     @Nullable
     public String getTime() {
         return mTime;
+    }
+
+    @Nullable
+    public long getDeadline() {
+        return mDeadline;
     }
 
     public boolean isCompleted() {

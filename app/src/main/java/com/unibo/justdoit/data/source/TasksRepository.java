@@ -142,7 +142,7 @@ public class TasksRepository implements TasksDataSource {
         mTasksLocalDataSource.completeTask(task);
 
         Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getDate(),
-                task.getTime(), task.getId(), true);
+                task.getTime(), task.getId(), task.getDeadline(), true);
 
         // Do in memory cache update to keep the app UI up to date
         if (mCachedTasks == null) {
@@ -164,7 +164,7 @@ public class TasksRepository implements TasksDataSource {
         mTasksLocalDataSource.activateTask(task);
 
         Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getDate(),
-                task.getTime(), task.getId());
+                task.getTime(), task.getId(), task.getDeadline());
 
         // Do in memory cache update to keep the app UI up to date
         if (mCachedTasks == null) {
@@ -254,7 +254,41 @@ public class TasksRepository implements TasksDataSource {
     }
 
     @Override
-    public void getNextDueTask(@NonNull long today) {
+    public void getNextDueTask(@NonNull final long today, @NonNull final GetTaskCallback callback) {
+        checkNotNull(today);
+
+        // interrogazione della cache per recuperare le task
+        // forse sarebbe da implementare, ma non so come, in quanto la task
+        // viene recuperata dalla cache attraverso id, che ora come ora non ho
+
+        // cerca la task nel database (local data source)
+        // se non è disponibile, cerca nella rete
+        mTasksLocalDataSource.getNextDueTask(today, new GetTaskCallback() {
+            @Override
+            public void onTaskLoaded(Task task) {
+                // aggiorna la memoria cache per mantenere l'UI aggiornata
+                // per il momento non abbiamo ancora la gestione della cache
+
+                callback.onTaskLoaded(task);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mTasksRemoteDataSource.getNextDueTask(today, new GetTaskCallback() {
+                    @Override
+                    public void onTaskLoaded(Task task) {
+                        // cache ...
+
+                        callback.onTaskLoaded(task);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        callback.onDataNotAvailable();
+                    }
+                });
+            }
+        });
 
     }
 

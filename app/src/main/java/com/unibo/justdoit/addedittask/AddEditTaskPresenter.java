@@ -127,7 +127,7 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
      * @param time
      */
     private void createTask(String title, String description, String date, String time) {
-        Task newTask = new Task(title, description, date, time);
+        Task newTask = new Task(title, description, date, time, mDeadline);
         System.out.println("Created " + newTask.toString());
         if (newTask.isEmpty()) {
             mAddTaskView.showEmptyTaskError();
@@ -148,7 +148,7 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter,
         if (isNewTask()) {
             throw new RuntimeException("updateTask() was called but task is new.");
         }
-        mTasksRepository.saveTask(new Task(title, description, date, time, mTaskId));
+        mTasksRepository.saveTask(new Task(title, description, date, time, mTaskId, mDeadline));
         mAddTaskView.showTasksList(); // After an edit, go back to the list.
     }
 }

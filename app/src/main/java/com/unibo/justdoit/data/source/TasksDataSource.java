@@ -50,7 +50,7 @@ public interface TasksDataSource {
 
     void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback);
 
-    void getNextDueTask(@NonNull long today);
+    void getNextDueTask(@NonNull long today, @NonNull GetTaskCallback callback);
 
     // utilizzano anche una lista di "id bloccati" che sono quelli corrispondenti
     // ad una task per cui l'utente è già stato notificato

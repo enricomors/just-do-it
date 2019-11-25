@@ -40,14 +40,14 @@ public class TasksRemoteDataSource implements TasksDataSource {
 
     static {
         TASKS_SERVICE_DATA = new LinkedHashMap<>(2);
-        addTask("Build tower in Pisa",
+        /*addTask("Build tower in Pisa",
                 "Ground looks good, no foundation work required.",
                 "10:00",
                 "01/01/2020");
         addTask("Finish bridge in Tacoma",
                 "Found awesome girders at half the cost!",
                 "20:00",
-                "01/12/2019");
+                "01/12/2019");*/
     }
 
     public static TasksRemoteDataSource getInstance() {
@@ -61,8 +61,8 @@ public class TasksRemoteDataSource implements TasksDataSource {
     private TasksRemoteDataSource() {}
 
 
-    private static void addTask(String title, String description, String time, String date) {
-        Task newTask = new Task(title, description, time, date);
+    private static void addTask(String title, String description, String time, String date, long deadline) {
+        Task newTask = new Task(title, description, time, date, deadline);
         TASKS_SERVICE_DATA.put(newTask.getId(), newTask);
     }
 
@@ -103,13 +103,13 @@ public class TasksRemoteDataSource implements TasksDataSource {
     }
 
     @Override
-    public void getNextDueTask(@NonNull long today) {
-
+    public void getNextDueTask(@NonNull long today, final @NonNull GetTaskCallback callback) {
+        // da implementare
     }
 
     @Override
     public void getTasksToRemind(@NonNull long today) {
-
+        // da implementare
     }
 
     @Override
@@ -120,7 +120,7 @@ public class TasksRemoteDataSource implements TasksDataSource {
     @Override
     public void completeTask(@NonNull Task task) {
         Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getDate(),
-                task.getTime(), task.getId(), true);
+                task.getTime(), task.getId(), task.getDeadline(), true);
         TASKS_SERVICE_DATA.put(task.getId(), completedTask);
     }
 
@@ -133,7 +133,7 @@ public class TasksRemoteDataSource implements TasksDataSource {
     @Override
     public void activateTask(@NonNull Task task) {
         Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getDate(),
-                task.getTime(), task.getId());
+                task.getTime(), task.getId(), task.getDeadline());
         TASKS_SERVICE_DATA.put(task.getId(), activeTask);
     }
 

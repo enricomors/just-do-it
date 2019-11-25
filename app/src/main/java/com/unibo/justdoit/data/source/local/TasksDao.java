@@ -96,4 +96,16 @@ public interface TasksDao {
      */
     @Query("DELETE FROM Tasks WHERE completed = 1")
     int deleteCompletedTasks();
+
+    /**
+     * Gets the task with the due date nearest to the actual date.
+     *
+     * @param today today's date
+     * @return next due task in database
+     */
+    @Query("SELECT * FROM tasks WHERE (completed = 0) AND (deadline > 0) AND (deadline - :today) > 0" +
+            "ORDER BY ABS(deadline - :today) LIMIT 1")
+    Task getNextDueTask(long today);
+
+    List<Task> getTasksToRemind();
 }

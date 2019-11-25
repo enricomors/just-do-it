@@ -164,26 +164,20 @@ public class ReminderService extends Service {
         // il problema è che l'altro progetto usa un valore in millisecondi (timestamp) per settare
         // le notifiche, mentre noi abbiamo la stringa della data. Bisogna cambiare il modo facendo
         // tutto basandosi sulla data.
-        try {
+        long reminderTime = task.getDeadline();
 
-            long reminderTime = task.getTaskDeadline();
+        if (reminderTime != 1 && reminderTime <= Helper.getCurrentTimestamp()) {
+            Date date = new Date(TimeUnit.SECONDS.toMillis(Helper.getCurrentTimestamp()));
+            calendar.setTime(date);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingAlarmIntent);
 
-            if (reminderTime != 1 && reminderTime <= Helper.getCurrentTimestamp()) {
-                Date date = new Date(TimeUnit.SECONDS.toMillis(Helper.getCurrentTimestamp()));
-                calendar.setTime(date);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingAlarmIntent);
+            Log.i(TAG, "Alarm set for" + task.getTitle() + " at " + Helper.getDateTime(calendar.getTimeInMillis() / 1000) + " (alarm id: " + alarmId + ")");
+        } else if (reminderTime != -1) {
+            Date date = new Date(TimeUnit.SECONDS.toMillis(reminderTime));
+            calendar.setTime(date);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingAlarmIntent);
 
-                Log.i(TAG, "Alarm set for" + task.getTitle() + " at " + Helper.getDateTime(calendar.getTimeInMillis() / 1000) + " (alarm id: " + alarmId + ")");
-            } else if (reminderTime != -1) {
-                Date date = new Date(TimeUnit.SECONDS.toMillis(reminderTime));
-                calendar.setTime(date);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingAlarmIntent);
-
-                Log.i(TAG, "Alarm set for " + task.getTitle() + " at " + Helper.getDateTime(calendar.getTimeInMillis() / 1000) + " (alarm id: " + alarmId + ")");
-            }
-
-        } catch (ParseException ex) {
-            Log.i("Exception", ex.getLocalizedMessage());
+            Log.i(TAG, "Alarm set for " + task.getTitle() + " at " + Helper.getDateTime(calendar.getTimeInMillis() / 1000) + " (alarm id: " + alarmId + ")");
         }
     }
 

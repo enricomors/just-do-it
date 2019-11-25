@@ -113,8 +113,26 @@ public class TasksLocalDataSource implements TasksDataSource {
     }
 
     @Override
-    public void getNextDueTask(@NonNull long today) {
+    public void getNextDueTask(@NonNull final long today, @NonNull final GetTaskCallback callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final Task task = mTasksDao.getNextDueTask(today);
 
+                mAppExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (task != null) {
+                            callback.onTaskLoaded(task);
+                        } else {
+                            callback.onDataNotAvailable();
+                        }
+                    }
+                });
+            }
+        };
+
+        mAppExecutors.diskIO().execute(runnable);
     }
 
     @Override
