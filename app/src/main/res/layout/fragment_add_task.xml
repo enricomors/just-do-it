@@ -22,26 +22,26 @@
         android:id="@+id/edit_text_title"
         android:layout_width="363dp"
         android:layout_height="49dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Insert title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_date" />
 
     <EditText
         android:id="@+id/edit_text_description"
         android:layout_width="363dp"
-        android:layout_height="147dp"
+        android:layout_height="49dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:hint="Insert description"
         android:gravity="start|top"
-        android:inputType="textMultiLine"
+        android:hint="Insert description"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_bias="0.621"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
 
@@ -51,37 +51,36 @@
         android:layout_height="49dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="228dp"
         android:text="Class"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_priority"
-        app:layout_constraintVertical_bias="0.017" />
+        app:layout_constraintHorizontal_bias="0.905"
+        app:layout_constraintStart_toEndOf="@+id/button_priority"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
+        app:layout_constraintVertical_bias="0.091" />
 
     <Button
         android:id="@+id/button_priority"
         android:layout_width="147dp"
         android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Priority"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_description" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
+        app:layout_constraintVertical_bias="0.045" />
 
     <Button
         android:id="@+id/button_date"
-        android:layout_width="116dp"
-        android:layout_height="46dp"
+        android:layout_width="147dp"
+        android:layout_height="49dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="44dp"
@@ -91,8 +90,8 @@
 
     <Button
         android:id="@+id/button_time"
-        android:layout_width="141dp"
-        android:layout_height="47dp"
+        android:layout_width="147dp"
+        android:layout_height="49dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="44dp"
@@ -102,8 +101,9 @@
         android:text="Time"
         app:layout_constraintBottom_toTopOf="@+id/edit_text_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.896"
         app:layout_constraintStart_toEndOf="@+id/button_date"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
