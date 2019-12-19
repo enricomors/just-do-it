@@ -10,6 +10,10 @@ public class TaskClass {
     private int classId;
     private String name;
 
+    public TaskClass(String name) {
+        this.name = name;
+    }
+
     public int getClassId() {
         return classId;
     }
@@ -24,5 +28,10 @@ public class TaskClass {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

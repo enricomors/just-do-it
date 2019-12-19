@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -17,17 +19,23 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.justdoit.R;
+import com.example.justdoit.model.TaskClass;
+import com.example.justdoit.viewmodel.TaskClassViewModel;
 import com.example.justdoit.viewmodel.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,14 +48,14 @@ public class AddTaskFragment extends Fragment {
     @BindView(R.id.fabDone)
     FloatingActionButton fabDone;
 
-    @BindView(R.id.button_class)
-    Button buttonClass;
+    @BindView(R.id.spinner_class)
+    Spinner spinnerClass;
 
     @BindView(R.id.button_date)
     Button buttonDate;
 
-    @BindView(R.id.button_priority)
-    Button buttonPriority;
+    @BindView(R.id.spinner_priority)
+    Spinner spinnerPriority;
 
     @BindView(R.id.button_time)
     Button buttonTime;
@@ -59,6 +67,8 @@ public class AddTaskFragment extends Fragment {
     EditText textTitle;
 
     private TaskViewModel taskViewModel;
+    private TaskClassViewModel taskClassViewModel;
+    private ArrayAdapter<String> adapter;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -69,6 +79,20 @@ public class AddTaskFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_task, container, false);
         ButterKnife.bind(this, view);
+
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+
+        // populate the adapter for the spinner
+        taskClassViewModel = ViewModelProviders.of(this).get(TaskClassViewModel.class);
+        taskClassViewModel.getAllClasses().observe(this, new Observer<List<TaskClass>>() {
+            @Override
+            public void onChanged(List<TaskClass> taskClasses) {
+                for (TaskClass taskClass : taskClasses) {
+                    adapter.add(taskClass.toString());
+                }
+            }
+        });
+        spinnerClass.setAdapter(adapter);
         return view;
     }
 

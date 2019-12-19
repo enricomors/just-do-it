@@ -23,7 +23,7 @@ public class TaskViewModel extends AndroidViewModel {
 
         repository = new TaskRepository(application);
         allTask = repository.getAllTasks();
-        classesWithTasks = repository.getClassesWithTasks();
+        // classesWithTasks = repository.getClassesWithTasks();
     }
 
     public void insertTask(Task task) {

@@ -32,6 +32,6 @@ public interface TaskDao {
     Task getTask(int taskId);
 
     @Transaction
-    @Query("SELECT * FROM task_table")
+    @Query("SELECT * FROM task_class_table WHERE classId IN (SELECT DISTINCT(classTaskId) FROM task_table)")
     LiveData<List<ClassWithTask>> getClassesWithTasks();
 }

@@ -33,9 +33,10 @@ public class TaskRepository {
         return allTasks;
     }
 
+    /*
     public LiveData<List<ClassWithTask>> getClassesWithTasks() {
         return classesWithTasks;
-    }
+    }*/
 
     /** ASYNC TASKS: for other database operations, we need to execute the call
      * on the background thread ourselves, because database operations aren't
