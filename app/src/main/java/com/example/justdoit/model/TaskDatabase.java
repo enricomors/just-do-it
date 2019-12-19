@@ -13,6 +13,8 @@ public abstract class TaskDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
 
+    public abstract TaskClassDao taskClassDao();
+
     public static synchronized TaskDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
@@ -22,4 +24,6 @@ public abstract class TaskDatabase extends RoomDatabase {
         }
         return instance;
     }
+
+    //TODO: populate database
 }

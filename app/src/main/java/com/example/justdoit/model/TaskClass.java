@@ -8,7 +8,6 @@ public class TaskClass {
 
     @PrimaryKey(autoGenerate = true)
     private int classId;
-
     private String name;
 
     public int getClassId() {

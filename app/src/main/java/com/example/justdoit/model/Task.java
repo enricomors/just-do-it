@@ -8,7 +8,6 @@ public class Task {
 
     @PrimaryKey(autoGenerate = true)
     private int taskId;
-
     private String title;
     private String description;
     private String date;

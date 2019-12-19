@@ -5,7 +5,7 @@ import androidx.room.Relation;
 
 import java.util.List;
 
-public class TaskWithClass {
+public class ClassWithTask {
 
     @Embedded
     public TaskClass taskClass;

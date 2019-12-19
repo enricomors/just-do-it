@@ -11,20 +11,36 @@ public class TaskRepository {
 
     private TaskDao taskDao;
     private LiveData<List<Task>> allTasks;
+    private LiveData<List<ClassWithTask>> classesWithTasks;
 
     public TaskRepository(Application application) {
         TaskDatabase database = TaskDatabase.getInstance(application);
         this.taskDao = database.taskDao();
         this.allTasks = taskDao.getAllTasks();
+        this.classesWithTasks = taskDao.getClassesWithTasks();
     }
 
     public void insertTask(Task task) {
         new InsertTaskAsyncTask(taskDao).execute(task);
     }
 
+    //TODO: implement all other methods
+
+    /** Room will automatically execute the database operations that returns
+     LiveData on the background thread, so we don'd need to handle this. */
+
     public LiveData<List<Task>> getAllTasks() {
         return allTasks;
     }
+
+    public LiveData<List<ClassWithTask>> getClassesWithTasks() {
+        return classesWithTasks;
+    }
+
+    /** ASYNC TASKS: for other database operations, we need to execute the call
+     * on the background thread ourselves, because database operations aren't
+     * allowed by Room, since this will cause a crash in our application.
+     */
 
     public static class InsertTaskAsyncTask extends AsyncTask<Task, Void, Void> {
 
