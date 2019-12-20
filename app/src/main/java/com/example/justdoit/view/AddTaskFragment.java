@@ -4,6 +4,7 @@ package com.example.justdoit.view;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -33,6 +35,7 @@ import com.example.justdoit.viewmodel.TaskClassViewModel;
 import com.example.justdoit.viewmodel.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,7 +46,8 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddTaskFragment extends Fragment {
+public class AddTaskFragment extends Fragment
+        implements DatePickerFragment.DatePickerFragmentEvents {
 
     @BindView(R.id.fabDone)
     FloatingActionButton fabDone;
@@ -68,7 +72,8 @@ public class AddTaskFragment extends Fragment {
 
     private TaskViewModel taskViewModel;
     private TaskClassViewModel taskClassViewModel;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> classAdapter;
+    private ArrayAdapter<CharSequence> priorityAdapter;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -80,19 +85,23 @@ public class AddTaskFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_task, container, false);
         ButterKnife.bind(this, view);
 
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        classAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        priorityAdapter = ArrayAdapter.createFromResource(getContext(), R.array.priority_array,
+                android.R.layout.simple_spinner_dropdown_item);
 
         // populate the adapter for the spinner
         taskClassViewModel = ViewModelProviders.of(this).get(TaskClassViewModel.class);
-        taskClassViewModel.getAllClasses().observe(this, new Observer<List<TaskClass>>() {
-            @Override
-            public void onChanged(List<TaskClass> taskClasses) {
-                for (TaskClass taskClass : taskClasses) {
-                    adapter.add(taskClass.toString());
-                }
+        taskClassViewModel.getAllClasses().observe(this, taskClasses -> {
+            for (TaskClass taskClass : taskClasses) {
+                classAdapter.add(taskClass.toString());
             }
         });
-        spinnerClass.setAdapter(adapter);
+
+        priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerPriority.setAdapter(priorityAdapter);
+        spinnerClass.setAdapter(classAdapter);
+
         return view;
     }
 
@@ -106,13 +115,11 @@ public class AddTaskFragment extends Fragment {
             DialogFragment timePickerFragment = new TimePickerFragment();
             timePickerFragment.show(getFragmentManager(), "timePicker");
         });
-        buttonDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // open time picker
-                DialogFragment datePickerFragment = new DatePickerFragment();
-                datePickerFragment.show(getFragmentManager(), "datePicker");
-            }
+        buttonDate.setOnClickListener(v -> {
+            // open time picker
+            DialogFragment datePickerFragment = new DatePickerFragment();
+            ((DatePickerFragment) datePickerFragment).setDatePickerFragmentEvents(AddTaskFragment.this);
+            datePickerFragment.show(getFragmentManager(), "datePicker");
         });
     }
 
@@ -125,44 +132,8 @@ public class AddTaskFragment extends Fragment {
         // taskViewModel.insertTask(newTask);
     }
 
-    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        @Override
-        public void onTimeSet(TimePicker timePicker, int i, int i1) {
-            Toast.makeText(getContext(), "time set", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            Toast.makeText(getContext(), "date set", Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void onDateSelected(String date) {
+        buttonDate.setText(date);
     }
 }
