@@ -47,7 +47,8 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class AddTaskFragment extends Fragment
-        implements DatePickerFragment.DatePickerFragmentEvents {
+        implements DatePickerFragment.DatePickerFragmentEvents,
+        TimePickerFragment.TimePickerFragmentEvents {
 
     @BindView(R.id.fabDone)
     FloatingActionButton fabDone;
@@ -113,6 +114,7 @@ public class AddTaskFragment extends Fragment
         buttonTime.setOnClickListener(v -> {
             // open date picker
             DialogFragment timePickerFragment = new TimePickerFragment();
+            ((TimePickerFragment) timePickerFragment).setTimePickerFragmentEvents(AddTaskFragment.this);
             timePickerFragment.show(getFragmentManager(), "timePicker");
         });
         buttonDate.setOnClickListener(v -> {
@@ -135,5 +137,10 @@ public class AddTaskFragment extends Fragment
     @Override
     public void onDateSelected(String date) {
         buttonDate.setText(date);
+    }
+
+    @Override
+    public void onTimeSelected(String time) {
+        buttonTime.setText(time);
     }
 }

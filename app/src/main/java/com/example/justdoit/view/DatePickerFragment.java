@@ -15,7 +15,7 @@ public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     //Interface created for communicating this dialog fragment events to called fragment
-    public interface DatePickerFragmentEvents{
+    public interface DatePickerFragmentEvents {
         void onDateSelected(String date);
     }
 
@@ -40,11 +40,7 @@ public class DatePickerFragment extends DialogFragment
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Toast.makeText(getContext(), "date set", Toast.LENGTH_SHORT).show();
 
-        Calendar c = Calendar.getInstance();
-        c.set(year, month, day);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = sdf.format(c.getTime());
+        String formattedDate = day + "-" + month + "-" + year;
         datePickerFragmentEvents.onDateSelected(formattedDate);
     }
 }
