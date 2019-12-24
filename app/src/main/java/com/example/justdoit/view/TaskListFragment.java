@@ -1,30 +1,51 @@
 package com.example.justdoit.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.justdoit.R;
+import com.example.justdoit.model.Task;
+import com.example.justdoit.viewmodel.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class TaskListFragment extends Fragment {
+public class TaskListFragment extends Fragment implements TaskListAdapter.OnTaskClickListener {
 
     @BindView(R.id.fabAdd)
     FloatingActionButton fabAdd;
+
+    @BindView(R.id.task_list)
+    RecyclerView tasksList;
+
+    private TaskViewModel viewModel;
+
+    private TaskListAdapter adapter = new TaskListAdapter(this);
 
     public TaskListFragment() {
         // Required empty public constructor
@@ -42,6 +63,30 @@ public class TaskListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fabAdd.setOnClickListener(v -> onAddTask());
+
+        // instantiate the view model
+        viewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        viewModel.getAllTasks().observe(this, tasks -> adapter.setTasksList(tasks));
+
+        // set adapter
+        tasksList.setLayoutManager(new LinearLayoutManager(getContext()));
+        tasksList.setAdapter(adapter);
+
+        // helper to make the view swipable
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Task taskToDelete = adapter.getItem(viewHolder.getAdapterPosition());
+                DeleteTaskFragment fragment = new DeleteTaskFragment(taskToDelete);
+                fragment.show(getFragmentManager(), "Delete Task");
+                adapter.notifyDataSetChanged();
+            }
+        }).attachToRecyclerView(tasksList);
     }
 
     private void onAddTask() {
@@ -49,4 +94,11 @@ public class TaskListFragment extends Fragment {
         Navigation.findNavController(fabAdd).navigate(action);
     }
 
+    @Override
+    public void onItemClick(int position) {
+
+        adapter.getItem(position);
+        // TODO: open edit task fragment
+        Toast.makeText(getContext(), "Cliccata task", Toast.LENGTH_SHORT).show();
+    }
 }

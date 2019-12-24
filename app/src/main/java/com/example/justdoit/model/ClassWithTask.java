@@ -11,8 +11,8 @@ public class ClassWithTask {
     public TaskClass taskClass;
 
     @Relation(
-            parentColumn = "classId",
-            entityColumn = "classTaskId"
+            parentColumn = "name",
+            entityColumn = "taskClass"
     )
     public List<Task> allTasks;
 }

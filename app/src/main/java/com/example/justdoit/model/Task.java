@@ -13,15 +13,15 @@ public class Task {
     private String date;
     private String time;
     private int priority;
-    private int classTaskId;
+    private String taskClass;
 
-    public Task(String title, String description, String date, String time, int priority, int classTaskId) {
+    public Task(String title, String description, String date, String time, int priority, String taskClass) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.time = time;
         this.priority = priority;
-        this.classTaskId = classTaskId;
+        this.taskClass = taskClass;
     }
 
     public int getTaskId() {
@@ -48,8 +48,8 @@ public class Task {
         return priority;
     }
 
-    public int getClassTaskId() {
-        return classTaskId;
+    public String getTaskClass() {
+        return taskClass;
     }
 
     public void setTaskId(int taskId) {
@@ -76,7 +76,7 @@ public class Task {
         this.priority = priority;
     }
 
-    public void setClassTaskId(int classTaskId) {
-        this.classTaskId = classTaskId;
+    public void setTaskClass(String taskClass) {
+        this.taskClass = taskClass;
     }
 }

@@ -2,8 +2,11 @@ package com.example.justdoit.model;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.justdoit.view.DeleteTaskFragment;
 
 import java.util.List;
 
@@ -24,6 +27,9 @@ public class TaskRepository {
         new InsertTaskAsyncTask(taskDao).execute(task);
     }
 
+    public void deleteTask(Task task) {
+        new DeleteTaskAsyncTask(taskDao).execute(task);
+    }
     //TODO: implement all other methods
 
     /** Room will automatically execute the database operations that returns
@@ -31,6 +37,10 @@ public class TaskRepository {
 
     public LiveData<List<Task>> getAllTasks() {
         return allTasks;
+    }
+
+    public LiveData<List<ClassWithTask>> getClassesWithTasks() {
+        return classesWithTasks;
     }
 
     /*
@@ -54,6 +64,21 @@ public class TaskRepository {
         @Override
         protected Void doInBackground(Task... tasks) {
             taskDao.insertTask(tasks[0]);
+            return null;
+        }
+    }
+
+    public static class DeleteTaskAsyncTask extends AsyncTask<Task, Void, Void> {
+
+        private TaskDao taskDao;
+
+        private DeleteTaskAsyncTask(TaskDao taskDao) {
+            this.taskDao = taskDao;
+        }
+
+        @Override
+        protected Void doInBackground(Task... tasks) {
+            taskDao.deleteTask(tasks[0]);
             return null;
         }
     }

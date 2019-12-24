@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/addTaskFragment"
-        android:name="com.example.justdoit.view.AddTaskFragment"
+        android:name="com.example.justdoit.view.AddEditTaskFragment"
         android:label="fragment_add_task"
         tools:layout="@layout/fragment_add_task" >
         <action

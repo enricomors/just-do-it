@@ -15,14 +15,11 @@ import java.util.List;
 public class TaskViewModel extends AndroidViewModel {
 
     private TaskRepository repository;
-    private LiveData<List<Task>> allTask;
-    private LiveData<List<ClassWithTask>> classesWithTasks;
 
     public TaskViewModel(@NonNull Application application) {
         super(application);
 
         repository = new TaskRepository(application);
-        allTask = repository.getAllTasks();
         // classesWithTasks = repository.getClassesWithTasks();
     }
 
@@ -30,11 +27,15 @@ public class TaskViewModel extends AndroidViewModel {
         repository.insertTask(task);
     }
 
-    public LiveData<List<Task>> getAllTasks() {
-        return allTask;
+    public void deleteTask(Task task) {
+        repository.deleteTask(task);
     }
 
-    public LiveData<List<ClassWithTask>> getClassesWithTasks() {
-        return classesWithTasks;
+    public LiveData<List<Task>> getAllTasks() {
+        return repository.getAllTasks();
+    }
+
+    public LiveData<List<ClassWithTask>> getAllClassesWithTask() {
+        return repository.getClassesWithTasks();
     }
 }
