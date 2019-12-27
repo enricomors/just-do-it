@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.justdoit.view.DeleteTaskFragment;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class TaskRepository {
 
     private TaskDao taskDao;
+    private LiveData<Task> task;
     private LiveData<List<Task>> allTasks;
     private LiveData<List<ClassWithTask>> classesWithTasks;
 
@@ -30,6 +32,11 @@ public class TaskRepository {
     public void deleteTask(Task task) {
         new DeleteTaskAsyncTask(taskDao).execute(task);
     }
+
+    public void updateTask(Task task) {
+        new UpdateTaskAsyncTask(taskDao).execute(task);
+    }
+
     //TODO: implement all other methods
 
     /** Room will automatically execute the database operations that returns
@@ -41,6 +48,10 @@ public class TaskRepository {
 
     public LiveData<List<ClassWithTask>> getClassesWithTasks() {
         return classesWithTasks;
+    }
+
+    public LiveData<Task> getTask(int taskID) {
+        return taskDao.getTask(taskID);
     }
 
     /*
@@ -79,6 +90,21 @@ public class TaskRepository {
         @Override
         protected Void doInBackground(Task... tasks) {
             taskDao.deleteTask(tasks[0]);
+            return null;
+        }
+    }
+
+    public static class UpdateTaskAsyncTask extends AsyncTask<Task, Void, Void> {
+
+        private TaskDao taskDao;
+
+        private UpdateTaskAsyncTask(TaskDao taskDao) {
+            this.taskDao = taskDao;
+        }
+
+        @Override
+        protected Void doInBackground(Task... tasks) {
+            taskDao.updateTask(tasks[0]);
             return null;
         }
     }

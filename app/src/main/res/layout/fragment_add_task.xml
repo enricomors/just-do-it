@@ -33,11 +33,12 @@
     <EditText
         android:id="@+id/edit_text_description"
         android:layout_width="363dp"
-        android:layout_height="49dp"
+        android:layout_height="147dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
+        android:maxLength="150"
         android:gravity="start|top"
         android:hint="Insert description"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,8 +61,8 @@
         android:id="@+id/button_time"
         android:layout_width="147dp"
         android:layout_height="49dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
@@ -74,32 +75,38 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Spinner
-        android:id="@+id/spinner_priority"
-        android:layout_width="147dp"
-        android:layout_height="49dp"
+    <TextView
+        android:id="@+id/text_view_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:hint="Set priority"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
-        app:layout_constraintVertical_bias="0.056" />
+        app:layout_constraintVertical_bias="0.019" />
 
-    <Spinner
-        android:id="@+id/spinner_class"
-        android:layout_width="147dp"
-        android:layout_height="49dp"
+    <TextView
+        android:id="@+id/text_view_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:hint="Set class"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.188"
-        app:layout_constraintStart_toEndOf="@+id/spinner_priority"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toEndOf="@+id/text_view_priority"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
-        app:layout_constraintVertical_bias="0.056" />
+        app:layout_constraintVertical_bias="0.019" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
