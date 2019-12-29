@@ -1,12 +1,37 @@
 <resources>
-    <string name="app_name">justdoit</string>
+    <string name="app_name" translatable="false">justdoit</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string-array name="priority_array">
+    <string-array name="priority_array" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <string name="hint_title">Inserisci titolo</string>
+    <string name="hint_description">Inserisci descrizione</string>
+    <string name="hint_date">Data</string>
+    <string name="hint_time">Ora</string>
+    <string name="hint_class">Classe</string>
+    <string name="hint_priority">Priorità</string>
+
+    <string name="placeholder_title">Titolo</string>
+    <string name="placeholder_description">Descrizione</string>
+    <string name="placeholder_date">Data</string>
+    <string name="placeholder_time">Ora</string>
+    <string name="placeholder_class">Classe</string>
+    <string name="placeholder_priority">Priorità</string>
+
+    <string name="choose_class">Scegli una classe</string>
+    <string name="choose_priority">Specifica una priorità</string>
+
+    <string name="delete_task_req">Vuoi cancellare la task?</string>
+    <string name="delete_task_conf">Task eliminata</string>
+    <string name="delte_task">Cancella</string>
+    <string name="undo">Annulla</string>
+
+    <string name="date_set">Data selezionata</string>
+    <string name="time_set">Ora selezionata</string>
+
+    <string name="task_completed">Task completata</string>
 </resources>

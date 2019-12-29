@@ -2,6 +2,7 @@ package com.example.justdoit.model;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -16,12 +17,16 @@ public class TaskRepository {
     private TaskDao taskDao;
     private LiveData<Task> task;
     private LiveData<List<Task>> allTasks;
+    private LiveData<List<Task>> activeTasks;
+    private LiveData<List<Task>> completedTasks;
     private LiveData<List<ClassWithTask>> classesWithTasks;
 
     public TaskRepository(Application application) {
         TaskDatabase database = TaskDatabase.getInstance(application);
         this.taskDao = database.taskDao();
         this.allTasks = taskDao.getAllTasks();
+        this.activeTasks = taskDao.getAllActiveTasks();
+        this.completedTasks = taskDao.getCompletedTasks();
         this.classesWithTasks = taskDao.getClassesWithTasks();
     }
 
@@ -35,6 +40,10 @@ public class TaskRepository {
 
     public void updateTask(Task task) {
         new UpdateTaskAsyncTask(taskDao).execute(task);
+    }
+
+    public void updateComplete(int taskID, boolean completed) {
+        new UpdateCompletedAsyncTask(taskDao, taskID, completed).execute();
     }
 
     //TODO: implement all other methods
@@ -52,6 +61,14 @@ public class TaskRepository {
 
     public LiveData<Task> getTask(int taskID) {
         return taskDao.getTask(taskID);
+    }
+
+    public LiveData<List<Task>> getActiveTasks() {
+        return activeTasks;
+    }
+
+    public LiveData<List<Task>> getCompletedTasks() {
+        return completedTasks;
     }
 
     /*
@@ -105,6 +122,25 @@ public class TaskRepository {
         @Override
         protected Void doInBackground(Task... tasks) {
             taskDao.updateTask(tasks[0]);
+            return null;
+        }
+    }
+
+    public static class UpdateCompletedAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private TaskDao taskDao;
+        private boolean completed;
+        private int taskID;
+
+        private UpdateCompletedAsyncTask(TaskDao taskDao, int taskID, boolean completed) {
+            this.taskDao = taskDao;
+            this.completed = completed;
+            this.taskID = taskID;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            taskDao.updateComplete(taskID, completed);
             return null;
         }
     }

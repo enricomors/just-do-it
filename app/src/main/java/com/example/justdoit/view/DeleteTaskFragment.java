@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.justdoit.R;
 import com.example.justdoit.model.Task;
 import com.example.justdoit.viewmodel.TaskViewModel;
 
@@ -29,17 +30,17 @@ public class DeleteTaskFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-        builder.setMessage("Vuoi cancellare la task?")
-                .setPositiveButton("Cancella", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.delete_task_req)
+                .setPositiveButton(R.string.delte_task, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // delete task
                         taskViewModel.deleteTask(task);
-                        Toast.makeText(getContext(), "Task deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.delete_task_conf, Toast.LENGTH_SHORT).show();
                         dismiss();
                     }
                 })
-                .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.undo, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // user cancels dialog

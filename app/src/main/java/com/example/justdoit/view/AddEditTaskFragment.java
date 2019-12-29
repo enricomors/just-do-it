@@ -147,7 +147,7 @@ public class AddEditTaskFragment extends Fragment
         textViewClass.setOnClickListener(v -> {
             //TODO: open dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Choose a class");
+            builder.setTitle(R.string.choose_class);
             CharSequence[] classes = classNames.toArray(new CharSequence[classNames.size()]);
             builder.setItems(classes, (dialogInterface, i) -> textViewClass.setText(classes[i].toString()));
             AlertDialog dialog = builder.create();
@@ -155,7 +155,7 @@ public class AddEditTaskFragment extends Fragment
         });
         textViewPriority.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Choose a priority");
+            builder.setTitle(R.string.choose_priority);
             builder.setItems(R.array.priority_array, (dialogInterface, i) -> textViewPriority.setText(String.valueOf(i)));
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -173,7 +173,7 @@ public class AddEditTaskFragment extends Fragment
         String taskClass = textViewClass.getText().toString();
         int priority = Integer.valueOf(textViewPriority.getText().toString());
 
-        Task newTask = new Task(title, desc, date, time, priority, taskClass);
+        Task newTask = new Task(title, desc, date, time, priority, taskClass, false);
         taskViewModel.insertTask(newTask);
 
         Toast.makeText(getContext(), "Task added to database", Toast.LENGTH_SHORT).show();

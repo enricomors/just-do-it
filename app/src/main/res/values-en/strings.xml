@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hint_title">Insert title</string>
+    <string name="hint_description">Insert description</string>
+    <string name="hint_date">Date</string>
+    <string name="hint_time">Time</string>
+    <string name="hint_class">Class</string>
+    <string name="hint_priority">Priority</string>
+
+    <string name="placeholder_title">Title</string>
+    <string name="placeholder_description">Description</string>
+    <string name="placeholder_date">Date</string>
+    <string name="placeholder_time">Time</string>
+    <string name="placeholder_class">Class</string>
+    <string name="placeholder_priority">Priority</string>
+
+    <string name="choose_class">Choose a class</string>
+    <string name="choose_priority">Specify a priority</string>
+
+    <string name="delete_task_req">Do you want to delete this task?</string>
+    <string name="delete_task_conf">Task deleted</string>
+    <string name="delte_task">Delete</string>
+    <string name="undo">Cancel</string>
+
+    <string name="date_set">Date set</string>
+    <string name="time_set">Time set</string>
+
+    <string name="task_completed">Task completed</string>
+</resources>

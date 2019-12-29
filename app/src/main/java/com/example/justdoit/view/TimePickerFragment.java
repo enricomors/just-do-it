@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.justdoit.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -41,7 +43,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-        Toast.makeText(getContext(), "time set", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.time_set, Toast.LENGTH_SHORT).show();
 
         String formattedTime = hour + ":" + minute;
         timePickerFragmentEvents.onTimeSelected(formattedTime);

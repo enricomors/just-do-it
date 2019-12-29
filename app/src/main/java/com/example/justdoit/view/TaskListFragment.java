@@ -39,7 +39,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class TaskListFragment extends Fragment implements TaskListAdapter.OnTaskClickListener {
+public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTaskClickListener,
+        TaskListAdapter.OnTaskCompleteListener {
 
     @BindView(R.id.fabAdd)
     FloatingActionButton fabAdd;
@@ -49,7 +50,7 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.OnTask
 
     private TaskViewModel viewModel;
 
-    private TaskListAdapter adapter = new TaskListAdapter(this);
+    private TaskListAdapter adapter = new TaskListAdapter(this, this);
 
     public TaskListFragment() {
         // Required empty public constructor
@@ -70,7 +71,8 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.OnTask
 
         // instantiate the view model
         viewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-        viewModel.getAllTasks().observe(this, tasks -> adapter.setTasksList(tasks));
+        viewModel.getActiveTasks().observe(this, tasks -> adapter.setTasksList(tasks));
+        // viewModel.getAllTasks().observe(this, tasks -> adapter.setTasksList(tasks));
 
         // set adapter
         tasksList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -79,7 +81,9 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.OnTask
         // helper to make the view swipable
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -107,5 +111,12 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.OnTask
                 TaskListFragmentDirections.actionAddTask();
         action.setTaskID(clickedTask.getTaskId());
         NavHostFragment.findNavController(this).navigate(action);
+    }
+
+    @Override
+    public void onTaskComplete(int position, boolean complete) {
+        Task completedTask = adapter.getItem(position);
+        viewModel.updateComplete(completedTask.getTaskId(), complete);
+        Toast.makeText(getContext(), R.string.task_completed, Toast.LENGTH_SHORT).show();
     }
 }

@@ -14,8 +14,10 @@ public class Task {
     private String time;
     private int priority;
     private String taskClass;
+    private boolean completed;
 
-    public Task(String title, String description, String date, String time, int priority, String taskClass) {
+    public Task(String title, String description, String date, String time, int priority,
+                String taskClass, boolean completed) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -52,6 +54,10 @@ public class Task {
         return taskClass;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
     public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
@@ -78,5 +84,9 @@ public class Task {
 
     public void setTaskClass(String taskClass) {
         this.taskClass = taskClass;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

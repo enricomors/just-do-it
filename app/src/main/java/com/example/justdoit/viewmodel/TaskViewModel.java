@@ -12,6 +12,8 @@ import com.example.justdoit.model.TaskRepository;
 
 import java.util.List;
 
+import javax.security.auth.callback.Callback;
+
 public class TaskViewModel extends AndroidViewModel {
 
     private TaskRepository repository;
@@ -35,6 +37,10 @@ public class TaskViewModel extends AndroidViewModel {
         repository.updateTask(task);
     }
 
+    public void updateComplete(int taskID, boolean complete) {
+        repository.updateComplete(taskID, complete);
+    }
+
     public LiveData<Task> getTask(int taskID) {
         return repository.getTask(taskID);
     }
@@ -46,4 +52,13 @@ public class TaskViewModel extends AndroidViewModel {
     public LiveData<List<ClassWithTask>> getAllClassesWithTask() {
         return repository.getClassesWithTasks();
     }
+
+    public LiveData<List<Task>> getActiveTasks() {
+        return repository.getActiveTasks();
+    }
+
+    public LiveData<List<Task>> getCompletedTasks() {
+        return repository.getCompletedTasks();
+    }
+
 }

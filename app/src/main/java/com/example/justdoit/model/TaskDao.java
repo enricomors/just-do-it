@@ -22,11 +22,20 @@ public interface TaskDao {
     @Delete
     void deleteTask(Task task);
 
+    @Query("UPDATE task_table SET completed = :completed WHERE taskId = :taskId")
+    void updateComplete(int taskId, boolean completed);
+
     @Query("DELETE FROM task_table")
     void deleteAllTasks();
 
     @Query("SELECT * FROM task_table")
     LiveData<List<Task>> getAllTasks();
+
+    @Query("SELECT * FROM task_table WHERE completed = 0")
+    LiveData<List<Task>> getAllActiveTasks();
+
+    @Query("SELECT * FROM task_table WHERE completed = 1")
+    LiveData<List<Task>> getCompletedTasks();
 
     @Query("SELECT * FROM task_table WHERE taskId = :taskId")
     LiveData<Task> getTask(int taskId);

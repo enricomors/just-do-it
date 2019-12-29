@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.example.justdoit.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -38,7 +40,7 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        Toast.makeText(getContext(), "date set", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.date_set, Toast.LENGTH_SHORT).show();
 
         String formattedDate = day + "-" + month + "-" + year;
         datePickerFragmentEvents.onDateSelected(formattedDate);

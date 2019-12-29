@@ -4,18 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
+import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.justdoit.R;
-import com.example.justdoit.model.ClassWithTask;
 import com.example.justdoit.model.Task;
-import com.example.justdoit.viewmodel.TaskViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +21,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private List<Task> tasksList = new ArrayList<>();
 
     private OnTaskClickListener onTaskClickListener;
+    private OnTaskCompleteListener onTaskCompleteListener;
 
-    public TaskListAdapter(OnTaskClickListener onTaskClickListener) {
+    public TaskListAdapter(OnTaskClickListener onTaskClickListener,
+                           OnTaskCompleteListener onTaskCompleteListener) {
         this.onTaskClickListener = onTaskClickListener;
+        this.onTaskCompleteListener = onTaskCompleteListener;
     }
 
     // non so se mi serve
@@ -38,7 +37,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_task, parent, false);
-        return new TaskViewHolder(view, onTaskClickListener);
+        return new TaskViewHolder(view, onTaskClickListener, onTaskCompleteListener);
     }
 
     @Override
@@ -74,11 +73,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         notifyDataSetChanged();
     }
 
-    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            CompoundButton.OnCheckedChangeListener {
 
         public View itemView;
 
         private OnTaskClickListener onTaskClickListener;
+        private OnTaskCompleteListener onTaskCompleteListener;
 
         private CheckBox completed;
         private TextView title;
@@ -88,27 +89,35 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         private TextView taskClass;
         private TextView priority;
 
-        public TaskViewHolder(@NonNull View itemView, OnTaskClickListener onTaskClickListener) {
+        public TaskViewHolder(@NonNull View itemView,
+                              OnTaskClickListener onTaskClickListener,
+                              OnTaskCompleteListener onTaskCompleteListener) {
             super(itemView);
+            this.onTaskClickListener = onTaskClickListener;
+            this.onTaskCompleteListener = onTaskCompleteListener;
             this.itemView = itemView;
 
             completed = itemView.findViewById(R.id.check_complete);
             title = itemView.findViewById(R.id.text_view_title);
-            description = itemView.findViewById(R.id.text_view_descritption);
+            description = itemView.findViewById(R.id.text_view_description);
             date = itemView.findViewById(R.id.text_view_date);
             time = itemView.findViewById(R.id.text_view_time);
             taskClass = itemView.findViewById(R.id.text_view_class);
             priority = itemView.findViewById(R.id.text_view_priority);
 
             itemView.setOnClickListener(this);
-
-            this.onTaskClickListener = onTaskClickListener;
+            completed.setOnCheckedChangeListener(this);
         }
 
         @Override
         public void onClick(View view) {
             // get position of item clicked
             onTaskClickListener.onItemClick(getAdapterPosition());
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            onTaskCompleteListener.onTaskComplete(getAdapterPosition(), b);
         }
     }
 
@@ -117,5 +126,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
      */
     public interface OnTaskClickListener {
         void onItemClick(int position);
+    }
+
+    public interface OnTaskCompleteListener {
+        void onTaskComplete(int position, boolean complete);
     }
 }
