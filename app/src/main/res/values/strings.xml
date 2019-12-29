@@ -34,4 +34,10 @@
     <string name="time_set">Ora selezionata</string>
 
     <string name="task_completed">Task completata</string>
+
+    <string name="action_completed_tasks">Task completate</string>
+    <string name="action_all_tasks">Tutte le task</string>
+    <string name="action_active_tasks">Task attive</string>
+    <string name="action_statistics">Statistiche</string>
+
 </resources>

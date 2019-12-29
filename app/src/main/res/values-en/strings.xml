@@ -26,4 +26,9 @@
     <string name="time_set">Time set</string>
 
     <string name="task_completed">Task completed</string>
+
+    <string name="action_completed_tasks">Completed tasks</string>
+    <string name="action_all_tasks">All tasks</string>
+    <string name="action_active_tasks">Active tasks</string>
+    <string name="action_statistics">Statistics</string>
 </resources>

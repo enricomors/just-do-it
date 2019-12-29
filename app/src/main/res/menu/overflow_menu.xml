@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_completed_tasks"
+        android:title="@string/action_completed_tasks"/>
+
+    <item
+        android:id="@+id/action_all_tasks"
+        android:title="@string/action_all_tasks" />
+
+    <item
+        android:id="@+id/action_active_tasks"
+        android:title="@string/action_active_tasks" />
+
+    <item
+        android:id="@+id/action_statistics"
+        android:title="@string/action_statistics" />
+
+</menu>

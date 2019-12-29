@@ -1,12 +1,15 @@
 package com.example.justdoit.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.justdoit.R;
 
@@ -19,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // set up the toolbar
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        // set up the navigation controller
         navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupActionBarWithNavController(this, navController);
     }
@@ -26,5 +34,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, (DrawerLayout) null);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_active_tasks:
+                // schermata di default con task attive
+                return true;
+            case R.id.action_all_tasks:
+                // schermata con tutte le task, sia attive che completate
+                return true;
+            case R.id.action_completed_tasks:
+                // schermata con task completate
+                return true;
+            case R.id.action_statistics:
+                // statistiche
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
