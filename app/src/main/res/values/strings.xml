@@ -40,4 +40,8 @@
     <string name="action_active_tasks">Task attive</string>
     <string name="action_statistics">Statistiche</string>
 
+    <string name="completed_tasks">Task completate:</string>
+    <string name="active_tasks">Task attive:</string>
+    <string name="number_placeholder">0</string>
+
 </resources>

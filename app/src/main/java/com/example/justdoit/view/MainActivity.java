@@ -40,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_active_tasks:
-                // schermata di default con task attive
+                filterTasks(0);
                 return true;
             case R.id.action_all_tasks:
                 // schermata con tutte le task, sia attive che completate
+                filterTasks(1);
                 return true;
             case R.id.action_completed_tasks:
+                filterTasks(2);
                 // schermata con task completate
                 return true;
             case R.id.action_statistics:
@@ -56,5 +58,12 @@ public class MainActivity extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void filterTasks(int filterType) {
+        TaskListFragmentDirections.ActionFilterTask action =
+                TaskListFragmentDirections.actionFilterTask();
+        action.setFilerType(filterType);
+        navController.navigate(action);
     }
 }

@@ -52,6 +52,8 @@ public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTas
 
     private TaskListAdapter adapter = new TaskListAdapter(this, this);
 
+    private int filterType;
+
     public TaskListFragment() {
         // Required empty public constructor
     }
@@ -69,9 +71,23 @@ public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTas
         super.onViewCreated(view, savedInstanceState);
         fabAdd.setOnClickListener(v -> onAddTask());
 
+        filterType = TaskListFragmentArgs.fromBundle(getArguments()).getFilerType();
+
         // instantiate the view model
         viewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-        viewModel.getActiveTasks().observe(this, tasks -> adapter.setTasksList(tasks));
+
+        if (filterType == 0) {
+            viewModel.getActiveTasks().observe(this, tasks -> adapter.setTasksList(tasks));
+        }
+
+        if (filterType == 1) {
+            viewModel.getAllTasks().observe(this, tasks -> adapter.setTasksList(tasks));
+        }
+
+        if (filterType == 2) {
+            viewModel.getCompletedTasks().observe(this, tasks -> adapter.setTasksList(tasks));
+        }
+
         // viewModel.getAllTasks().observe(this, tasks -> adapter.setTasksList(tasks));
 
         // set adapter
@@ -118,5 +134,9 @@ public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTas
         Task completedTask = adapter.getItem(position);
         viewModel.updateComplete(completedTask.getTaskId(), complete);
         Toast.makeText(getContext(), R.string.task_completed, Toast.LENGTH_SHORT).show();
+    }
+
+    public void changeTaskList(int type) {
+
     }
 }

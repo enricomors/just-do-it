@@ -31,4 +31,8 @@
     <string name="action_all_tasks">All tasks</string>
     <string name="action_active_tasks">Active tasks</string>
     <string name="action_statistics">Statistics</string>
+
+    <string name="completed_tasks">Completed tasks:</string>
+    <string name="active_tasks">Active tasks:</string>
+    <string name="number_placeholder">0</string>
 </resources>
