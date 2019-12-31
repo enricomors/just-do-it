@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.justdoit.R;
@@ -37,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.overflow_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_active_tasks:
@@ -52,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_statistics:
                 // statistiche
+                statistics();
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
@@ -64,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
         TaskListFragmentDirections.ActionFilterTask action =
                 TaskListFragmentDirections.actionFilterTask();
         action.setFilerType(filterType);
+        navController.navigate(action);
+    }
+
+    private void statistics() {
+        NavDirections action = TaskListFragmentDirections.actionStatistics();
         navController.navigate(action);
     }
 }

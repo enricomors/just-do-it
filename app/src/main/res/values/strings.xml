@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">justdoit</string>
+    <string name="app_name" translatable="false">JustDoIt</string>
 
     <string-array name="priority_array" translatable="false">
         <item>0</item>
@@ -42,6 +42,7 @@
 
     <string name="completed_tasks">Task completate:</string>
     <string name="active_tasks">Task attive:</string>
+    <string name="all_tasks">Task totali:</string>
     <string name="number_placeholder">0</string>
 
 </resources>
