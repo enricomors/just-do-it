@@ -25,17 +25,23 @@ public interface TaskDao {
     @Query("UPDATE task_table SET completed = :completed WHERE taskId = :taskId")
     void updateComplete(int taskId, boolean completed);
 
+    @Query("UPDATE task_table SET ongoing = :ongoing WHERE taskId = :taskId")
+    void updateOngoing(int taskId, boolean ongoing);
+
     @Query("DELETE FROM task_table")
     void deleteAllTasks();
 
     @Query("SELECT * FROM task_table")
     LiveData<List<Task>> getAllTasks();
 
-    @Query("SELECT * FROM task_table WHERE completed = 0")
+    @Query("SELECT * FROM task_table WHERE completed = 0 AND ongoing = 0")
     LiveData<List<Task>> getAllActiveTasks();
 
     @Query("SELECT * FROM task_table WHERE completed = 1")
     LiveData<List<Task>> getCompletedTasks();
+
+    @Query("SELECT * FROM task_table WHERE ongoing = 1 AND completed = 0")
+    LiveData<List<Task>> getOngoingTasks();
 
     @Query("SELECT * FROM task_table WHERE taskId = :taskId")
     LiveData<Task> getTask(int taskId);

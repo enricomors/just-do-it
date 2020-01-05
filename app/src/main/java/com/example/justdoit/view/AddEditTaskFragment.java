@@ -240,7 +240,8 @@ public class AddEditTaskFragment extends Fragment
 
         //TODO: da gestire meglio
 
-        Task newTask = new Task(title, desc, date, time, priority, taskClass, false);
+        Task newTask = new Task(title, desc, date, time, priority, taskClass,
+                false, false);
 
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis());

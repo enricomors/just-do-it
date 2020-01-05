@@ -15,15 +15,18 @@ public class Task {
     private int priority;
     private String taskClass;
     private boolean completed;
+    private boolean ongoing;
 
     public Task(String title, String description, String date, String time, int priority,
-                String taskClass, boolean completed) {
+                String taskClass, boolean completed, boolean ongoing) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.time = time;
         this.priority = priority;
         this.taskClass = taskClass;
+        this.completed = completed;
+        this.ongoing = ongoing;
     }
 
     public int getTaskId() {
@@ -58,6 +61,10 @@ public class Task {
         return completed;
     }
 
+    public boolean isOngoing() {
+        return ongoing;
+    }
+
     public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
@@ -88,5 +95,9 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public void setOngoing(boolean ongoing) {
+        this.ongoing = ongoing;
     }
 }

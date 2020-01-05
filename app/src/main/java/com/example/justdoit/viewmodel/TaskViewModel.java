@@ -41,6 +41,10 @@ public class TaskViewModel extends AndroidViewModel {
         repository.updateComplete(taskID, complete);
     }
 
+    public void updateOngoing(int taskID, boolean ongoing) {
+        repository.updateOngoing(taskID, ongoing);
+    }
+
     public LiveData<Task> getTask(int taskID) {
         return repository.getTask(taskID);
     }
@@ -61,4 +65,7 @@ public class TaskViewModel extends AndroidViewModel {
         return repository.getCompletedTasks();
     }
 
+    public LiveData<List<Task>> getOngoingTasks() {
+        return repository.getOngoingTasks();
+    }
 }

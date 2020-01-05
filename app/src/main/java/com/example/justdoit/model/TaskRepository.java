@@ -19,6 +19,7 @@ public class TaskRepository {
     private LiveData<List<Task>> allTasks;
     private LiveData<List<Task>> activeTasks;
     private LiveData<List<Task>> completedTasks;
+    private LiveData<List<Task>> ongoingTasks;
     private LiveData<List<ClassWithTask>> classesWithTasks;
 
     public TaskRepository(Application application) {
@@ -26,6 +27,7 @@ public class TaskRepository {
         this.taskDao = database.taskDao();
         this.allTasks = taskDao.getAllTasks();
         this.activeTasks = taskDao.getAllActiveTasks();
+        this.ongoingTasks = taskDao.getOngoingTasks();
         this.completedTasks = taskDao.getCompletedTasks();
         this.classesWithTasks = taskDao.getClassesWithTasks();
     }
@@ -46,6 +48,10 @@ public class TaskRepository {
         new UpdateCompletedAsyncTask(taskDao, taskID, completed).execute();
     }
 
+    public void updateOngoing(int taskID, boolean ongoing) {
+        new UpdateOngoingAsyncTask(taskDao, taskID, ongoing).execute();
+    }
+
     //TODO: implement all other methods
 
     /** Room will automatically execute the database operations that returns
@@ -63,13 +69,13 @@ public class TaskRepository {
         return taskDao.getTask(taskID);
     }
 
-    public LiveData<List<Task>> getActiveTasks() {
-        return activeTasks;
-    }
+    public LiveData<List<Task>> getActiveTasks() { return activeTasks; }
 
     public LiveData<List<Task>> getCompletedTasks() {
         return completedTasks;
     }
+
+    public LiveData<List<Task>> getOngoingTasks() { return ongoingTasks; }
 
     /*
     public LiveData<List<ClassWithTask>> getClassesWithTasks() {
@@ -141,6 +147,25 @@ public class TaskRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             taskDao.updateComplete(taskID, completed);
+            return null;
+        }
+    }
+
+    public static class UpdateOngoingAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private TaskDao taskDao;
+        private boolean ongoing;
+        private int taskID;
+
+        private UpdateOngoingAsyncTask(TaskDao taskDao, int taskID, boolean ongoing) {
+            this.taskDao = taskDao;
+            this.ongoing = ongoing;
+            this.taskID = taskID;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            taskDao.updateOngoing(taskID, ongoing);
             return null;
         }
     }
