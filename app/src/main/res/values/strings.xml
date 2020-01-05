@@ -45,4 +45,15 @@
     <string name="all_tasks">Task totali:</string>
     <string name="number_placeholder">0</string>
 
+    <string name="no_desc">Nessuna descrizione</string>
+    <string name="title_err">Inserisci un titolo</string>
+    <string name="no_date_time">Inserisci una scadenza</string>
+    <string name="date_time_err">Seleziona una scadenza futura</string>
+    <string name="dialog_err">Sono presenti errori</string>
+    <string name="dialog_ok">Ok</string>
+
+    <string name="channel_name">Tasks notifications</string>
+    <string name="channel_description">Notifiche per task scadute</string>
+
+    <string name="task_due">Task scaduta</string>
 </resources>

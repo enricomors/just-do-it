@@ -1,8 +1,10 @@
 package com.example.justdoit.view;
 
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -18,23 +19,22 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justdoit.R;
 import com.example.justdoit.model.Task;
 import com.example.justdoit.model.TaskClass;
+import com.example.justdoit.util.AlarmReceiver;
 import com.example.justdoit.viewmodel.TaskClassViewModel;
 import com.example.justdoit.viewmodel.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,9 +72,24 @@ public class AddEditTaskFragment extends Fragment
     private ArrayAdapter<String> classAdapter;
     private ArrayAdapter<CharSequence> priorityAdapter;
 
+    // date and time variables
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+
+    private String title;
+    private String desc;
+    private String date;
+    private String time;
+    private String taskClass;
+    private String pNumber;
 
     private Task taskToUpdate;
     private int taskID;
+
+    private long selectedTime;
 
     private ArrayList<String> classNames = new ArrayList<>();
 
@@ -125,13 +140,8 @@ public class AddEditTaskFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fabDone.setOnClickListener(v -> {
-            if (taskID != 0) {
-                onTaskUpdate();
-            } else {
-                onTaskSave();
-            }
-        });
+        fabDone.setOnClickListener(v -> checkFields());
+
         buttonTime.setOnClickListener(v -> {
             // open date picker
             DialogFragment timePickerFragment = new TimePickerFragment();
@@ -162,21 +172,89 @@ public class AddEditTaskFragment extends Fragment
         });
     }
 
+    private void checkFields() {
+
+        String err = "";
+
+        title = textTitle.getText().toString().trim();
+        desc = textDescription.getText().toString().trim();
+
+        date = buttonDate.getText().toString();
+        time = buttonTime.getText().toString();
+
+        taskClass = textViewClass.getText().toString();
+        pNumber = textViewPriority.getText().toString();
+
+        if (title.length() == 0) {
+            err += getString(R.string.title_err) + "\n";
+         }
+
+        if (desc.length() == 0) {
+            desc = getString(R.string.no_desc);
+        }
+
+        if (date.length() == 0 || time.length() == 0) {
+            err += getString(R.string.no_date_time) + "\n";
+        } else {
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, year);
+            c.set(Calendar.MONTH, month);
+            c.set(Calendar.DAY_OF_MONTH, day);
+            c.set(Calendar.HOUR_OF_DAY, hour);
+            c.set(Calendar.MINUTE, minute);
+
+            if (c.before(Calendar.getInstance())) {
+                err += getString(R.string.date_time_err) + "\n";
+            }
+        }
+
+        if (taskClass.length() == 0) {
+            // default class
+        }
+        if (err.length() == 0) {
+            if (taskID != 0) {
+                onTaskUpdate();
+            } else {
+                onTaskSave();
+            }
+        } else {
+            openDialogError(err);
+        }
+
+    }
+
+    private void openDialogError(String errorString) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(errorString)
+                .setTitle(getString(R.string.dialog_err));
+        builder.setPositiveButton(R.string.dialog_ok, (dialogInterface, i) -> {});
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     private void onTaskSave() {
         NavDirections action = AddEditTaskFragmentDirections.actionSaveTask();
         Navigation.findNavController(fabDone).navigate(action);
 
-        String title = textTitle.getText().toString();
-        String desc = textDescription.getText().toString();
-        String date = buttonDate.getText().toString();
-        String time = buttonTime.getText().toString();
-        String taskClass = textViewClass.getText().toString();
-        int priority = Integer.valueOf(textViewPriority.getText().toString());
+        int priority = Integer.valueOf(pNumber);
+
+        //TODO: da gestire meglio
 
         Task newTask = new Task(title, desc, date, time, priority, taskClass, false);
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+
+        startAlarm(c, newTask.getTaskId());
+
         taskViewModel.insertTask(newTask);
 
-        Toast.makeText(getContext(), "Task added to database", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Task saved", Toast.LENGTH_SHORT).show();
     }
 
     private void onTaskUpdate() {
@@ -190,18 +268,50 @@ public class AddEditTaskFragment extends Fragment
         taskToUpdate.setTaskClass(textViewClass.getText().toString());
         taskToUpdate.setPriority(Integer.valueOf(textViewPriority.getText().toString()));
 
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+
+        startAlarm(c, taskToUpdate.getTaskId());
+
         taskViewModel.updateTask(taskToUpdate);
 
         Toast.makeText(getContext(), "Task updated", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onDateSelected(String date) {
-        buttonDate.setText(date);
+    public void onDateSelected(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+
+        String formattedDate = day + "-" + month + "-" + year;
+        buttonDate.setText(formattedDate);
     }
 
     @Override
-    public void onTimeSelected(String time) {
-        buttonTime.setText(time);
+    public void onTimeSelected(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+
+        String formattedTime = hour + ":" + minute;
+        buttonTime.setText(formattedTime);
+    }
+
+    private void startAlarm(Calendar c, int id) {
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), AlarmReceiver.class);
+        intent.putExtra("Id", id);
+        intent.putExtra("Title", title);
+        // TODO: requestCode must be unique for every pendingIntent
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
     }
 }

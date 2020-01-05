@@ -120,9 +120,7 @@ public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTas
 
     @Override
     public void onItemClick(int position) {
-
         Task clickedTask = adapter.getItem(position);
-        // TODO: open edit task fragment
         TaskListFragmentDirections.ActionAddTask action =
                 TaskListFragmentDirections.actionAddTask();
         action.setTaskID(clickedTask.getTaskId());

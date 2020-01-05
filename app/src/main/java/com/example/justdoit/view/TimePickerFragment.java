@@ -19,7 +19,7 @@ import java.util.Calendar;
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     public interface TimePickerFragmentEvents {
-        void onTimeSelected(String time);
+        void onTimeSelected(int hour, int minute);
     }
 
     TimePickerFragmentEvents timePickerFragmentEvents;
@@ -44,8 +44,6 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
         Toast.makeText(getContext(), R.string.time_set, Toast.LENGTH_SHORT).show();
-
-        String formattedTime = hour + ":" + minute;
-        timePickerFragmentEvents.onTimeSelected(formattedTime);
+        timePickerFragmentEvents.onTimeSelected(hour, minute);
     }
 }

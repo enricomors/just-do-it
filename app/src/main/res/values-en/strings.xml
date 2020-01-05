@@ -35,4 +35,17 @@
     <string name="completed_tasks">Completed tasks:</string>
     <string name="all_tasks">Total tasks:</string>
     <string name="number_placeholder">0</string>
+
+    <string name="no_desc">No description</string>
+    <string name="title_err">Insert title</string>
+    <string name="no_date_time">Insert a deadline</string>
+    <string name="date_time_err">Select a future date</string>
+    <string name="dialog_err">There are some errors</string>
+    <string name="dialog_ok">Ok</string>
+
+    <string name="channel_name">Tasks notifications</string>
+    <string name="channel_description">Notifications for undue tasks</string>
+
+    <string name="task_due">Task due</string>
+
 </resources>
