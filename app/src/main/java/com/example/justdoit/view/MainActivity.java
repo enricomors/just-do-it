@@ -1,12 +1,14 @@
 package com.example.justdoit.view;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.app.NotificationChannel;
@@ -17,11 +19,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.justdoit.AddClassFragmentDirections;
 import com.example.justdoit.R;
+import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private NavController navController;
+
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
 
     private static String CHANNEL_ID = "Tasks";
 
@@ -34,9 +42,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
         // set up the navigation controller
-        navController = Navigation.findNavController(this, R.id.fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph())
+                .setDrawerLayout(drawer)
+                .build();
+
+        NavigationUI.setupWithNavController(myToolbar, navController, appBarConfiguration);
+
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -76,6 +95,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        drawer.closeDrawers();
+        switch (menuItem.getItemId()) {
+            case R.id.nav_task_list:
+                filterTasks(0);
+                break;
+            case R.id.nav_stats:
+                statistics();
+                break;
+            case R.id.nav_new_class:
+                addClass();
+                break;
+        }
+        return true;
+    }
+
     private void filterTasks(int filterType) {
         TaskListFragmentDirections.ActionFilterTask action =
                 TaskListFragmentDirections.actionFilterTask();
@@ -88,19 +124,8 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(action);
     }
 
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+    private void addClass() {
+        NavDirections action = TaskListFragmentDirections.actionAddClass();
+        navController.navigate(action);
     }
 }
