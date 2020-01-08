@@ -190,13 +190,7 @@ public class AddEditTaskFragment extends Fragment
         if (date.length() == 0 || time.length() == 0) {
             err += getString(R.string.no_date_time) + "\n";
         } else {
-            Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(System.currentTimeMillis());
-            c.set(Calendar.YEAR, year);
-            c.set(Calendar.MONTH, month);
-            c.set(Calendar.DAY_OF_MONTH, day);
-            c.set(Calendar.HOUR_OF_DAY, hour);
-            c.set(Calendar.MINUTE, minute);
+            Calendar c = getCalendar();
 
             if (c.before(Calendar.getInstance())) {
                 err += getString(R.string.date_time_err) + "\n";
@@ -243,15 +237,7 @@ public class AddEditTaskFragment extends Fragment
         Task newTask = new Task(title, desc, date, time, priority, taskClass,
                 false, false);
 
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(System.currentTimeMillis());
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, day);
-        c.set(Calendar.HOUR_OF_DAY, hour);
-        c.set(Calendar.MINUTE, minute);
-        c.set(Calendar.SECOND, 0);
-
+        Calendar c = getCalendar();
         // startAlarm(c, newTask.getTaskId());
 
         // pass the new task along w/ calendar representing deadline
@@ -271,17 +257,12 @@ public class AddEditTaskFragment extends Fragment
         taskToUpdate.setTaskClass(textViewClass.getText().toString());
         taskToUpdate.setPriority(Integer.valueOf(textViewPriority.getText().toString()));
 
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(System.currentTimeMillis());
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, day);
-        c.set(Calendar.HOUR_OF_DAY, hour);
-        c.set(Calendar.MINUTE, minute);
+        Calendar c = getCalendar();
 
         // startAlarm(c, taskToUpdate.getTaskId());
 
-        taskViewModel.updateTask(taskToUpdate);
+        taskViewModel.updateTask(taskToUpdate, c, taskToUpdate.getTitle(),
+                taskToUpdate.getTaskId());
 
         Toast.makeText(getContext(), "Task updated", Toast.LENGTH_SHORT).show();
     }
@@ -303,5 +284,17 @@ public class AddEditTaskFragment extends Fragment
 
         String formattedTime = hour + ":" + minute;
         buttonTime.setText(formattedTime);
+    }
+
+    private Calendar getCalendar() {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        return c;
     }
 }

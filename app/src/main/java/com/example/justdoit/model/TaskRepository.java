@@ -43,8 +43,8 @@ public class TaskRepository {
         new DeleteTaskAsyncTask(taskDao).execute(task);
     }
 
-    public void updateTask(Task task) {
-        new UpdateTaskAsyncTask(taskDao).execute(task);
+    public void updateTask(Task task, Calendar deadline, String title, long id) {
+        new UpdateTaskAsyncTask(taskDao, deadline, title, id, this).execute(task);
     }
 
     public void updateComplete(long taskID, boolean completed) {
@@ -103,6 +103,9 @@ public class TaskRepository {
      * allowed by Room, since this will cause a crash in our application.
      */
 
+    /**
+     * AsyncTask for inserting new tasks into the database
+     */
     public static class InsertTaskAsyncTask extends AsyncTask<Task, Void, Long> {
 
         private TaskDao taskDao;
@@ -131,6 +134,9 @@ public class TaskRepository {
         }
     }
 
+    /**
+     * AsyncTask for deleting an existing task in the database
+     */
     public static class DeleteTaskAsyncTask extends AsyncTask<Task, Void, Void> {
 
         private TaskDao taskDao;
@@ -146,12 +152,24 @@ public class TaskRepository {
         }
     }
 
+    /**
+     * AsyncTask for updating an existing task in the database
+     */
     public static class UpdateTaskAsyncTask extends AsyncTask<Task, Void, Void> {
 
         private TaskDao taskDao;
+        private Calendar deadline;
+        private String title;
+        private TaskRepository repository;
+        private long id;
 
-        private UpdateTaskAsyncTask(TaskDao taskDao) {
+        private UpdateTaskAsyncTask(TaskDao taskDao, Calendar deadline, String title, long id,
+                                    TaskRepository repository) {
             this.taskDao = taskDao;
+            this.deadline = deadline;
+            this.title = title;
+            this.id = id;
+            this.repository = repository;
         }
 
         @Override
@@ -159,8 +177,17 @@ public class TaskRepository {
             taskDao.updateTask(tasks[0]);
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            repository.setAlarm(deadline, id, title);
+        }
     }
 
+    /**
+     * AsyncTask for setting an existing task as complete
+     */
     public static class UpdateCompletedAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private TaskDao taskDao;
@@ -180,6 +207,9 @@ public class TaskRepository {
         }
     }
 
+    /**
+     * AsyncTask for setting an existing task as ongoing
+     */
     public static class UpdateOngoingAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private TaskDao taskDao;
