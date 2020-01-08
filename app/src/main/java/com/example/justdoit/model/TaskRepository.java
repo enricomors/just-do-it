@@ -1,21 +1,23 @@
 package com.example.justdoit.model;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.view.LayoutInflater;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.example.justdoit.view.DeleteTaskFragment;
+import com.example.justdoit.util.AlarmReceiver;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class TaskRepository {
 
     private TaskDao taskDao;
-    private LiveData<Task> task;
+    private Application application;
     private LiveData<List<Task>> allTasks;
     private LiveData<List<Task>> activeTasks;
     private LiveData<List<Task>> completedTasks;
@@ -23,6 +25,7 @@ public class TaskRepository {
     private LiveData<List<ClassWithTask>> classesWithTasks;
 
     public TaskRepository(Application application) {
+        this.application = application;
         TaskDatabase database = TaskDatabase.getInstance(application);
         this.taskDao = database.taskDao();
         this.allTasks = taskDao.getAllTasks();
@@ -32,8 +35,8 @@ public class TaskRepository {
         this.classesWithTasks = taskDao.getClassesWithTasks();
     }
 
-    public void insertTask(Task task) {
-        new InsertTaskAsyncTask(taskDao).execute(task);
+    public void insertTask(Task task, Calendar deadline, String title) {
+         new InsertTaskAsyncTask(taskDao, deadline, title, this).execute(task);
     }
 
     public void deleteTask(Task task) {
@@ -44,11 +47,11 @@ public class TaskRepository {
         new UpdateTaskAsyncTask(taskDao).execute(task);
     }
 
-    public void updateComplete(int taskID, boolean completed) {
+    public void updateComplete(long taskID, boolean completed) {
         new UpdateCompletedAsyncTask(taskDao, taskID, completed).execute();
     }
 
-    public void updateOngoing(int taskID, boolean ongoing) {
+    public void updateOngoing(long taskID, boolean ongoing) {
         new UpdateOngoingAsyncTask(taskDao, taskID, ongoing).execute();
     }
 
@@ -65,7 +68,7 @@ public class TaskRepository {
         return classesWithTasks;
     }
 
-    public LiveData<Task> getTask(int taskID) {
+    public LiveData<Task> getTask(long taskID) {
         return taskDao.getTask(taskID);
     }
 
@@ -77,6 +80,19 @@ public class TaskRepository {
 
     public LiveData<List<Task>> getOngoingTasks() { return ongoingTasks; }
 
+    private void setAlarm(Calendar c, long id, String title) {
+        AlarmManager alarmManager = (AlarmManager) application.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(application, AlarmReceiver.class);
+        //intent.putExtra("Id", id);
+        intent.putExtra("TaskID", id);
+        intent.putExtra("Title", title);
+        // TODO: requestCode must be unique for every pendingIntent
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(application, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
     /*
     public LiveData<List<ClassWithTask>> getClassesWithTasks() {
         return classesWithTasks;
@@ -87,18 +103,31 @@ public class TaskRepository {
      * allowed by Room, since this will cause a crash in our application.
      */
 
-    public static class InsertTaskAsyncTask extends AsyncTask<Task, Void, Void> {
+    public static class InsertTaskAsyncTask extends AsyncTask<Task, Void, Long> {
 
         private TaskDao taskDao;
+        private TaskRepository repository;
+        private String title;
+        private Calendar deadline;
 
-        private InsertTaskAsyncTask(TaskDao taskDao) {
+        private InsertTaskAsyncTask(TaskDao taskDao, Calendar deadline, String title,
+                                    TaskRepository repository) {
             this.taskDao = taskDao;
+            this.deadline = deadline;
+            this.title = title;
+            this.repository = repository;
         }
 
         @Override
-        protected Void doInBackground(Task... tasks) {
-            taskDao.insertTask(tasks[0]);
-            return null;
+        protected Long doInBackground(Task... tasks) {
+            long taskID = taskDao.insertTask(tasks[0]);
+            return taskID;
+        }
+
+        @Override
+        protected void onPostExecute(Long taskID) {
+            super.onPostExecute(taskID);
+            repository.setAlarm(deadline, taskID, title);
         }
     }
 
@@ -136,9 +165,9 @@ public class TaskRepository {
 
         private TaskDao taskDao;
         private boolean completed;
-        private int taskID;
+        private long taskID;
 
-        private UpdateCompletedAsyncTask(TaskDao taskDao, int taskID, boolean completed) {
+        private UpdateCompletedAsyncTask(TaskDao taskDao, long taskID, boolean completed) {
             this.taskDao = taskDao;
             this.completed = completed;
             this.taskID = taskID;
@@ -155,9 +184,9 @@ public class TaskRepository {
 
         private TaskDao taskDao;
         private boolean ongoing;
-        private int taskID;
+        private long taskID;
 
-        private UpdateOngoingAsyncTask(TaskDao taskDao, int taskID, boolean ongoing) {
+        private UpdateOngoingAsyncTask(TaskDao taskDao, long taskID, boolean ongoing) {
             this.taskDao = taskDao;
             this.ongoing = ongoing;
             this.taskID = taskID;

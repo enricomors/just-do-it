@@ -1,11 +1,7 @@
 package com.example.justdoit.view;
 
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,7 +24,6 @@ import android.widget.Toast;
 import com.example.justdoit.R;
 import com.example.justdoit.model.Task;
 import com.example.justdoit.model.TaskClass;
-import com.example.justdoit.util.AlarmReceiver;
 import com.example.justdoit.viewmodel.TaskClassViewModel;
 import com.example.justdoit.viewmodel.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -87,7 +82,7 @@ public class AddEditTaskFragment extends Fragment
     private String pNumber;
 
     private Task taskToUpdate;
-    private int taskID;
+    private long taskID;
 
     private long selectedTime;
 
@@ -155,7 +150,6 @@ public class AddEditTaskFragment extends Fragment
             datePickerFragment.show(getFragmentManager(), "datePicker");
         });
         textViewClass.setOnClickListener(v -> {
-            //TODO: open dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.choose_class);
             CharSequence[] classes = classNames.toArray(new CharSequence[classNames.size()]);
@@ -197,6 +191,7 @@ public class AddEditTaskFragment extends Fragment
             err += getString(R.string.no_date_time) + "\n";
         } else {
             Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(System.currentTimeMillis());
             c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, month);
             c.set(Calendar.DAY_OF_MONTH, day);
@@ -209,8 +204,13 @@ public class AddEditTaskFragment extends Fragment
         }
 
         if (taskClass.length() == 0) {
-            // default class
+            taskClass = "No class";
         }
+
+        if (pNumber.length() == 0) {
+            pNumber = "0";
+        }
+
         if (err.length() == 0) {
             if (taskID != 0) {
                 onTaskUpdate();
@@ -250,10 +250,12 @@ public class AddEditTaskFragment extends Fragment
         c.set(Calendar.DAY_OF_MONTH, day);
         c.set(Calendar.HOUR_OF_DAY, hour);
         c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
 
-        startAlarm(c, newTask.getTaskId());
+        // startAlarm(c, newTask.getTaskId());
 
-        taskViewModel.insertTask(newTask);
+        // pass the new task along w/ calendar representing deadline
+        taskViewModel.insertTask(newTask, c, title);
 
         Toast.makeText(getContext(), "Task saved", Toast.LENGTH_SHORT).show();
     }
@@ -277,7 +279,7 @@ public class AddEditTaskFragment extends Fragment
         c.set(Calendar.HOUR_OF_DAY, hour);
         c.set(Calendar.MINUTE, minute);
 
-        startAlarm(c, taskToUpdate.getTaskId());
+        // startAlarm(c, taskToUpdate.getTaskId());
 
         taskViewModel.updateTask(taskToUpdate);
 
@@ -301,18 +303,5 @@ public class AddEditTaskFragment extends Fragment
 
         String formattedTime = hour + ":" + minute;
         buttonTime.setText(formattedTime);
-    }
-
-    private void startAlarm(Calendar c, int id) {
-        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getContext(), AlarmReceiver.class);
-        intent.putExtra("Id", id);
-        intent.putExtra("Title", title);
-        // TODO: requestCode must be unique for every pendingIntent
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-
     }
 }

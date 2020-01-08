@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
-    private int taskId;
+    private long taskId;
     private String title;
     private String description;
     private String date;
@@ -29,7 +29,7 @@ public class Task {
         this.ongoing = ongoing;
     }
 
-    public int getTaskId() {
+    public long getTaskId() {
         return taskId;
     }
 
@@ -65,7 +65,7 @@ public class Task {
         return ongoing;
     }
 
-    public void setTaskId(int taskId) {
+    public void setTaskId(long taskId) {
         this.taskId = taskId;
     }
 

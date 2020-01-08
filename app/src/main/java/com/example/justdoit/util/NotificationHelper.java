@@ -3,6 +3,8 @@ package com.example.justdoit.util;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -47,11 +49,23 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification(String title, int id) {
+    public NotificationCompat.Builder getChannelNotification(String title, long id) {
+
+        // create intent for the activity we want to start and add extra to open desired fragment
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        resultIntent.putExtra("TaskID", id);
+        // create TaskStackBuilder adn add the intent, which inflates the back stack
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        // get the PendingIntent containing the entire back stack
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle("Task due")
                 .setContentText(title)
-                .setSmallIcon(R.drawable.ic_alarm);
+                .setContentIntent(resultPendingIntent)
+                .setSmallIcon(R.drawable.ic_alarm)
+                .setAutoCancel(true);
     }
 }

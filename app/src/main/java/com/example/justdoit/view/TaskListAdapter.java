@@ -44,7 +44,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
 
         holder.title.setText(tasksList.get(position).getTitle());
-        holder.description.setText(tasksList.get(position).getDescription());
         holder.date.setText(tasksList.get(position).getDate());
         holder.time.setText(tasksList.get(position).getTime());
         holder.priority.setText(String.valueOf(tasksList.get(position).getPriority()));
@@ -83,7 +82,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         private CheckBox completed;
         private TextView title;
-        private TextView description;
         private TextView date;
         private TextView time;
         private TextView taskClass;
@@ -99,10 +97,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
             completed = itemView.findViewById(R.id.check_complete);
             title = itemView.findViewById(R.id.text_view_title);
-            description = itemView.findViewById(R.id.text_view_description);
             date = itemView.findViewById(R.id.text_view_date);
             time = itemView.findViewById(R.id.text_view_time);
-            taskClass = itemView.findViewById(R.id.text_view_class);
+            taskClass = itemView.findViewById(R.id.label_class);
             priority = itemView.findViewById(R.id.text_view_priority);
 
             itemView.setOnClickListener(this);

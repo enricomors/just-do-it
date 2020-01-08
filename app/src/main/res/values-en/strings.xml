@@ -51,4 +51,7 @@
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
 
+    <string name="label_priority">Priority:</string>
+    <string name="label_class">Class:</string>
+
 </resources>

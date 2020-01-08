@@ -1,7 +1,6 @@
 package com.example.justdoit.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -11,15 +10,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.example.justdoit.AddClassFragmentDirections;
 import com.example.justdoit.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -31,12 +26,13 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
-    private static String CHANNEL_ID = "Tasks";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // get task id from intent
+        long taskID = getIntent().getLongExtra("TaskID", 0L);
 
         // set up the toolbar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -47,15 +43,17 @@ public class MainActivity extends AppCompatActivity
 
         // set up the navigation controller
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
         AppBarConfiguration appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph())
                 .setDrawerLayout(drawer)
                 .build();
-
         NavigationUI.setupWithNavController(myToolbar, navController, appBarConfiguration);
-
         navigationView.setNavigationItemSelectedListener(this);
+
+        // if task id is not 0, navigate to TaskDetailFragment
+        if (taskID != 0L) {
+            taskDetail(taskID);
+        }
     }
 
     @Override
@@ -116,6 +114,13 @@ public class MainActivity extends AppCompatActivity
         TaskListFragmentDirections.ActionFilterTask action =
                 TaskListFragmentDirections.actionFilterTask();
         action.setFilerType(filterType);
+        navController.navigate(action);
+    }
+
+    private void taskDetail(long taskID) {
+        TaskListFragmentDirections.ActionTaskDetail action =
+                TaskListFragmentDirections.actionTaskDetail();
+        action.setTaskID(taskID);
         navController.navigate(action);
     }
 

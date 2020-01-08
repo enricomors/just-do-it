@@ -2,6 +2,7 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/task_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,7 +14,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="95dp">
 
         <TextView
             android:id="@+id/text_view_title"
@@ -37,39 +38,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/text_view_description"
-            android:layout_width="331dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/placeholder_description"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.003"
-            app:layout_constraintStart_toEndOf="@+id/check_complete"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_title"
-            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/text_view_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/placeholder_date"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/check_complete"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_description" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
         <TextView
             android:id="@+id/text_view_time"
@@ -77,45 +61,38 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/placeholder_time"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.023"
-            app:layout_constraintStart_toEndOf="@+id/text_view_date" />
+            app:layout_constraintStart_toEndOf="@+id/text_view_date"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
         <TextView
-            android:id="@+id/text_view_class"
+            android:id="@+id/label_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/placeholder_class"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_description" />
+            app:layout_constraintEnd_toStartOf="@+id/text_view_priority"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
         <TextView
             android:id="@+id/text_view_priority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/placeholder_priority"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/text_view_class"
-            app:layout_constraintHorizontal_bias="0.935"
-            app:layout_constraintStart_toEndOf="@+id/text_view_time"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_description"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

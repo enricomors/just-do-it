@@ -10,9 +10,8 @@ import com.example.justdoit.model.ClassWithTask;
 import com.example.justdoit.model.Task;
 import com.example.justdoit.model.TaskRepository;
 
+import java.util.Calendar;
 import java.util.List;
-
-import javax.security.auth.callback.Callback;
 
 public class TaskViewModel extends AndroidViewModel {
 
@@ -25,8 +24,8 @@ public class TaskViewModel extends AndroidViewModel {
         // classesWithTasks = repository.getClassesWithTasks();
     }
 
-    public void insertTask(Task task) {
-        repository.insertTask(task);
+    public void insertTask(Task task, Calendar deadline, String title) {
+        repository.insertTask(task, deadline, title);
     }
 
     public void deleteTask(Task task) {
@@ -37,15 +36,15 @@ public class TaskViewModel extends AndroidViewModel {
         repository.updateTask(task);
     }
 
-    public void updateComplete(int taskID, boolean complete) {
+    public void updateComplete(long taskID, boolean complete) {
         repository.updateComplete(taskID, complete);
     }
 
-    public void updateOngoing(int taskID, boolean ongoing) {
+    public void updateOngoing(long taskID, boolean ongoing) {
         repository.updateOngoing(taskID, ongoing);
     }
 
-    public LiveData<Task> getTask(int taskID) {
+    public LiveData<Task> getTask(long taskID) {
         return repository.getTask(taskID);
     }
 

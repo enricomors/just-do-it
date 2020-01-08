@@ -14,7 +14,7 @@ import java.util.List;
 public interface TaskDao {
 
     @Insert
-    void insertTask(Task task);
+    long insertTask(Task task);
 
     @Update
     void updateTask(Task task);
@@ -23,10 +23,10 @@ public interface TaskDao {
     void deleteTask(Task task);
 
     @Query("UPDATE task_table SET completed = :completed WHERE taskId = :taskId")
-    void updateComplete(int taskId, boolean completed);
+    void updateComplete(long taskId, boolean completed);
 
     @Query("UPDATE task_table SET ongoing = :ongoing WHERE taskId = :taskId")
-    void updateOngoing(int taskId, boolean ongoing);
+    void updateOngoing(long taskId, boolean ongoing);
 
     @Query("DELETE FROM task_table")
     void deleteAllTasks();
@@ -44,7 +44,7 @@ public interface TaskDao {
     LiveData<List<Task>> getOngoingTasks();
 
     @Query("SELECT * FROM task_table WHERE taskId = :taskId")
-    LiveData<Task> getTask(int taskId);
+    LiveData<Task> getTask(long taskId);
 
     @Transaction
     @Query("SELECT * FROM task_class_table WHERE classId IN (SELECT DISTINCT(taskClass) FROM task_table)")
