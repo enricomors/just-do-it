@@ -12,7 +12,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.justdoit.R;
 import com.example.justdoit.viewmodel.TaskViewModel;
@@ -48,6 +50,12 @@ public class TaskDetailFragment extends Fragment {
     @BindView(R.id.label_class)
     TextView textViewClass;
 
+    @BindView(R.id.check_complete)
+    CheckBox checkBoxComplete;
+
+    @BindView(R.id.check_ongoing)
+    CheckBox checkBoxOngoing;
+
     private long taskID;
 
     private TaskViewModel taskViewModel;
@@ -75,6 +83,7 @@ public class TaskDetailFragment extends Fragment {
             textViewPriority.setText(String.valueOf(task.getPriority()));
             textViewClass.setText(task.getTaskClass());
         });
+
         return view;
     }
 
@@ -88,5 +97,32 @@ public class TaskDetailFragment extends Fragment {
             action.setTaskID(taskID);
             NavHostFragment.findNavController(this).navigate(action);
         });
+
+        checkBoxComplete.setOnClickListener(v -> {
+            boolean checked = ((CheckBox) v).isChecked();
+            updateComplete(checked, taskID);
+        });
+
+        checkBoxOngoing.setOnClickListener(v -> {
+            boolean checked = ((CheckBox) v).isChecked();
+            updateOngoing(checked, taskID);
+        });
+    }
+
+    private void updateComplete(boolean complete, long taskID) {
+        taskViewModel.updateComplete(taskID, complete);
+        backToList(getString(R.string.task_completed));
+    }
+
+    private void updateOngoing(boolean ongoing, long taskID) {
+        taskViewModel.updateOngoing(taskID, ongoing);
+        backToList(getString(R.string.task_started_now));
+    }
+
+    private void backToList(String message) {
+        TaskDetailFragmentDirections.ActionBackToList action =
+                TaskDetailFragmentDirections.actionBackToList();
+        NavHostFragment.findNavController(this).navigate(action);
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

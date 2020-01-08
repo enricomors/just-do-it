@@ -49,7 +49,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         holder.priority.setText(String.valueOf(tasksList.get(position).getPriority()));
         holder.taskClass.setText(tasksList.get(position).getTaskClass());
 
-        holder.completed.setChecked(false);
+        holder.completed.setChecked(tasksList.get(position).isCompleted());
     }
 
     @Override

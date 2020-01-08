@@ -34,6 +34,7 @@
     <string name="time_set">Ora selezionata</string>
 
     <string name="task_completed">Task completata</string>
+    <string name="task_started_now">Task iniziata</string>
 
     <string name="action_completed_tasks">Task completate</string>
     <string name="action_all_tasks">Tutte le task</string>
@@ -62,4 +63,11 @@
 
     <string name="label_priority">Priorità:</string>
     <string name="label_class">Classe:</string>
+
+    <string name="task_complete">Completa la task</string>
+    <string name="task_ongoing">Inizia la task</string>
+
+    <string name="priority_label">Priorità:</string>
+    <string name="class_label">Classe:</string>
+    <string name="deadline_label">Scadenza:</string>
 </resources>

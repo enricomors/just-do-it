@@ -26,6 +26,7 @@
     <string name="time_set">Time set</string>
 
     <string name="task_completed">Task completed</string>
+    <string name="task_started_now">Task ongoing</string>
 
     <string name="action_completed_tasks">Completed tasks</string>
     <string name="action_all_tasks">All tasks</string>
@@ -53,5 +54,12 @@
 
     <string name="label_priority">Priority:</string>
     <string name="label_class">Class:</string>
+
+    <string name="task_complete">Mark as complete</string>
+    <string name="task_ongoing">Mark as ongoing</string>
+
+    <string name="priority_label">Priority:</string>
+    <string name="class_label">Class:</string>
+    <string name="deadline_label">Deadline:</string>
 
 </resources>

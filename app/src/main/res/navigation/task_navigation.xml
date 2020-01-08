@@ -79,5 +79,8 @@
         <action
             android:id="@+id/action_editTask"
             app:destination="@id/addTaskFragment" />
+        <action
+            android:id="@+id/action_backToList"
+            app:destination="@id/taskListFragment" />
     </fragment>
 </navigation>
