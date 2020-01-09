@@ -227,23 +227,23 @@ public class AddEditTaskFragment extends Fragment
     }
 
     private void onTaskSave() {
-        NavDirections action = AddEditTaskFragmentDirections.actionSaveTask();
-        Navigation.findNavController(fabDone).navigate(action);
-
         int priority = Integer.valueOf(pNumber);
 
         //TODO: da gestire meglio
 
-        Task newTask = new Task(title, desc, date, time, priority, taskClass,
-                false, false);
-
         Calendar c = getCalendar();
+        long deadline = c.getTimeInMillis();
+
+        Task newTask = new Task(title, desc, date, time, priority, taskClass,
+                false, false, deadline);
         // startAlarm(c, newTask.getTaskId());
 
         // pass the new task along w/ calendar representing deadline
         taskViewModel.insertTask(newTask, c, title);
 
         Toast.makeText(getContext(), "Task saved", Toast.LENGTH_SHORT).show();
+        NavDirections action = AddEditTaskFragmentDirections.actionSaveTask();
+        Navigation.findNavController(fabDone).navigate(action);
     }
 
     private void onTaskUpdate() {
@@ -258,6 +258,9 @@ public class AddEditTaskFragment extends Fragment
         taskToUpdate.setPriority(Integer.valueOf(textViewPriority.getText().toString()));
 
         Calendar c = getCalendar();
+        long deadline = c.getTimeInMillis();
+
+        taskToUpdate.setDeadlineMillies(deadline);
 
         // startAlarm(c, taskToUpdate.getTaskId());
 

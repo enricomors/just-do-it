@@ -25,8 +25,8 @@
         android:layout_marginLeft="24dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toTopOf="@+id/text_view_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -49,8 +49,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginBottom="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:text="@string/deadline_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintBottom_toTopOf="@+id/tv_priority"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -85,8 +85,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginBottom="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:text="@string/priority_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintBottom_toTopOf="@+id/tw_class"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -96,8 +96,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:text="@string/class_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintBaseline_toBaselineOf="@+id/label_class"
         app:layout_constraintStart_toStartOf="parent" />
 

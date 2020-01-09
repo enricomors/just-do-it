@@ -31,21 +31,15 @@ public class DeleteTaskFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         builder.setMessage(R.string.delete_task_req)
-                .setPositiveButton(R.string.delte_task, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // delete task
-                        taskViewModel.deleteTask(task);
-                        Toast.makeText(getContext(), R.string.delete_task_conf, Toast.LENGTH_SHORT).show();
-                        dismiss();
-                    }
+                .setPositiveButton(R.string.delete_task, (dialogInterface, i) -> {
+                    // delete task
+                    taskViewModel.deleteTask(task);
+                    Toast.makeText(getContext(), R.string.delete_task_conf, Toast.LENGTH_SHORT).show();
+                    dismiss();
                 })
-                .setNegativeButton(R.string.undo, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // user cancels dialog
-                        dismiss();
-                    }
+                .setNegativeButton(R.string.undo, (dialogInterface, i) -> {
+                    // user cancels dialog
+                    dismiss();
                 });
         return builder.create();
     }

@@ -82,6 +82,8 @@ public class TaskDetailFragment extends Fragment {
             textViewTime.setText(task.getTime());
             textViewPriority.setText(String.valueOf(task.getPriority()));
             textViewClass.setText(task.getTaskClass());
+            checkBoxComplete.setChecked(task.isCompleted());
+            checkBoxOngoing.setChecked(task.isOngoing());
         });
 
         return view;

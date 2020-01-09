@@ -14,7 +14,7 @@
         android:title="@string/action_active_tasks" />
 
     <item
-        android:id="@+id/action_statistics"
-        android:title="@string/action_statistics" />
+        android:id="@+id/action_ongoing"
+        android:title="@string/action_ongoing" />
 
 </menu>

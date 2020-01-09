@@ -3,6 +3,8 @@ package com.example.justdoit.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Comparator;
+
 @Entity(tableName = "task_table")
 public class Task {
 
@@ -16,9 +18,10 @@ public class Task {
     private String taskClass;
     private boolean completed;
     private boolean ongoing;
+    private long deadlineMillies;
 
     public Task(String title, String description, String date, String time, int priority,
-                String taskClass, boolean completed, boolean ongoing) {
+                String taskClass, boolean completed, boolean ongoing, long deadlineMillies) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -27,6 +30,7 @@ public class Task {
         this.taskClass = taskClass;
         this.completed = completed;
         this.ongoing = ongoing;
+        this.deadlineMillies = deadlineMillies;
     }
 
     public long getTaskId() {
@@ -65,6 +69,10 @@ public class Task {
         return ongoing;
     }
 
+    public long getDeadlineMillies() {
+        return deadlineMillies;
+    }
+
     public void setTaskId(long taskId) {
         this.taskId = taskId;
     }
@@ -100,4 +108,24 @@ public class Task {
     public void setOngoing(boolean ongoing) {
         this.ongoing = ongoing;
     }
+
+    public void setDeadlineMillies(long deadlineMillies) {
+        this.deadlineMillies = deadlineMillies;
+    }
+
+    public static final Comparator<Task> BY_DEADLINE = (t1, t2) -> {
+        int res;
+        if (t1.getDeadlineMillies() == t2.getDeadlineMillies()) {
+            res = 0;
+        } else {
+            if (t1.getDeadlineMillies() > t2.getDeadlineMillies()) {
+                res = 1;
+            } else {
+                res = -1;
+            }
+        }
+        return res;
+    };
+
+
 }

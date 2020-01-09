@@ -82,9 +82,8 @@ public class MainActivity extends AppCompatActivity
                 filterTasks(2);
                 // schermata con task completate
                 return true;
-            case R.id.action_statistics:
-                // statistiche
-                statistics();
+            case R.id.action_ongoing:
+                filterTasks(3);
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

@@ -27,7 +27,7 @@
 
     <string name="delete_task_req">Vuoi cancellare la task?</string>
     <string name="delete_task_conf">Task eliminata</string>
-    <string name="delte_task">Cancella</string>
+    <string name="delete_task">Cancella</string>
     <string name="undo">Annulla</string>
 
     <string name="date_set">Data selezionata</string>
@@ -40,6 +40,7 @@
     <string name="action_all_tasks">Tutte le task</string>
     <string name="action_active_tasks">Task attive</string>
     <string name="action_statistics">Statistiche</string>
+    <string name="action_ongoing">Task in svolgimento</string>
 
     <string name="completed_tasks">Task completate:</string>
     <string name="active_tasks">Task attive:</string>
@@ -70,4 +71,6 @@
     <string name="priority_label">Priorità:</string>
     <string name="class_label">Classe:</string>
     <string name="deadline_label">Scadenza:</string>
+    <string name="filters">Filtra per:</string>
+
 </resources>
