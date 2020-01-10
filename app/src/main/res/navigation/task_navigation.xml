@@ -54,8 +54,8 @@
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.example.justdoit.view.StatisticsFragment"
-        android:label="fragment_statistics"
-        tools:layout="@layout/fragment_statistics" >
+        android:label="Statistics"
+        tools:layout="@layout/fragment_statistics">
         <action
             android:id="@+id/action_backToList"
             app:destination="@id/taskListFragment" />
@@ -63,7 +63,7 @@
     <fragment
         android:id="@+id/addClassFragment"
         android:name="com.example.justdoit.view.AddClassFragment"
-        android:label="fragment_add_class"
+        android:label="Add Class"
         tools:layout="@layout/fragment_add_class">
         <action
             android:id="@+id/action_classAdded"
@@ -74,12 +74,12 @@
     <fragment
         android:id="@+id/taskDetailFragment"
         android:name="com.example.justdoit.view.TaskDetailFragment"
-        android:label="fragment_task_detail"
-        tools:layout="@layout/fragment_task_detail" >
+        android:label="Task Detail"
+        tools:layout="@layout/fragment_task_detail">
         <argument
             android:name="taskID"
-            app:argType="long"
-            android:defaultValue="0L" />
+            android:defaultValue="0L"
+            app:argType="long" />
         <action
             android:id="@+id/action_editTask"
             app:destination="@id/addTaskFragment" />

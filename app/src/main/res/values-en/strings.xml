@@ -64,5 +64,10 @@
     <string name="class_label">Class:</string>
     <string name="deadline_label">Deadline:</string>
     <string name="filters">Filters:</string>
+    <string name="class_name">Insert class name:</string>
+    <string name="delete_class_conf">Class deleted</string>
+    <string name="delete_class_req">Do you want do delete this class?</string>
+    <string name="new_class">Create</string>
+    <string name="insert_name_hint">Insert a name</string>
 
 </resources>

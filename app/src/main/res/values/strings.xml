@@ -73,4 +73,10 @@
     <string name="deadline_label">Scadenza:</string>
     <string name="filters">Filtra per:</string>
 
+    <string name="class_name">Inserisci un nome per la classe:</string>
+    <string name="delete_class_req">Vuoi cancellare la classe?</string>
+    <string name="delete_class_conf">Classe eliminata</string>
+    <string name="new_class">Crea</string>
+    <string name="insert_name_hint">Inserisci un nome</string>
+
 </resources>

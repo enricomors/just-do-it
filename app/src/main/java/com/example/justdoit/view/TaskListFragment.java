@@ -75,8 +75,6 @@ public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTas
     private String classFilter;
     private String priorityFilter;
 
-    private SharedPreferences pref;
-
     public TaskListFragment() {
         // Required empty public constructor
     }
@@ -92,6 +90,8 @@ public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTas
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        classNames.clear();
 
         fabAdd.setOnClickListener(v -> onAddTask());
 

@@ -27,6 +27,10 @@ public class TaskClassViewModel extends AndroidViewModel {
         repository.insertClass(taskClass);
     }
 
+    public void deleteClass(TaskClass taskClass) {
+        repository.deleteClass(taskClass);
+    }
+
     public LiveData<List<TaskClass>> getAllClasses() {
         return allClasses;
     }

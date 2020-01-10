@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Delete;
 
 import java.util.List;
 
@@ -26,6 +27,10 @@ public class TaskClassRepository {
         new InsertClassAsyncTask(taskClassDao).execute(taskClass);
     }
 
+    public void deleteClass(TaskClass taskClass) {
+        new DeleteClassAsyncTask(taskClassDao).execute(taskClass);
+    }
+
     //TODO: implement all other methods
 
     /** ASYNC TASKS */
@@ -44,4 +49,21 @@ public class TaskClassRepository {
             return null;
         }
     }
+
+
+    public static class DeleteClassAsyncTask extends AsyncTask<TaskClass, Void, Void> {
+
+        private TaskClassDao taskClassDao;
+
+        private DeleteClassAsyncTask(TaskClassDao taskClassDao) {
+            this.taskClassDao = taskClassDao;
+        }
+
+        @Override
+        protected Void doInBackground(TaskClass... taskClasses) {
+            taskClassDao.deleteClass(taskClasses[0]);
+            return null;
+        }
+    }
+
 }

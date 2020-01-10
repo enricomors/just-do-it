@@ -29,8 +29,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         this.onTaskCompleteListener = onTaskCompleteListener;
     }
 
-    // non so se mi serve
-    // public void updateTasksList(List<Task> newTasksList)
 
     @NonNull
     @Override
