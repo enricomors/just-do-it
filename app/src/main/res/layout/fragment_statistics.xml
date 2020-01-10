@@ -6,63 +6,72 @@
     android:layout_height="match_parent"
     tools:context=".view.StatisticsFragment">
 
-    <TextView
-        android:id="@+id/text_view_active"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginLeft="18dp"
-        android:text="@string/active_tasks"
-        app:layout_constraintBaseline_toBaselineOf="@+id/active_number"
-        app:layout_constraintStart_toStartOf="parent" />
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_total_tasks">
+
+    </com.github.mikephil.charting.charts.PieChart>
 
     <TextView
-        android:id="@+id/active_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="18dp"
-        android:text="@string/number_placeholder"
-        app:layout_constraintStart_toEndOf="@+id/text_view_active"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_view_completed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/completed_tasks"
-        app:layout_constraintBaseline_toBaselineOf="@+id/completed_number"
-        app:layout_constraintStart_toStartOf="@+id/text_view_active" />
-
-    <TextView
-        android:id="@+id/completed_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="7dp"
-        android:text="@string/number_placeholder"
-        app:layout_constraintStart_toEndOf="@+id/text_view_completed"
-        app:layout_constraintTop_toBottomOf="@+id/active_number" />
-
-    <TextView
-        android:id="@+id/text_view_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/all_tasks"
-        app:layout_constraintBaseline_toBaselineOf="@+id/text_view_all_number"
-        app:layout_constraintStart_toStartOf="@+id/text_view_completed" />
-
-    <TextView
-        android:id="@+id/text_view_all_number"
+        android:id="@+id/tv_total_tasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="9dp"
-        android:text="@string/number_placeholder"
-        app:layout_constraintStart_toEndOf="@+id/text_view_all"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_completed" />
+        android:layout_marginTop="8dp"
+        android:text="@string/all_tasks"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tw_all_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_total_tasks"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/tw_all_value"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_completed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_active"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_ongoing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_completed"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -82,4 +82,7 @@ dependencies {
     implementation "com.android.support:palette-v7:$supportVersion"
 
     implementation "androidx.preference:preference:$preferencesVersion"
+
+    //MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

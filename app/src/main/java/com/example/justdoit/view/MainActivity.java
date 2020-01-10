@@ -1,10 +1,12 @@
 package com.example.justdoit.view;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -110,10 +112,36 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void filterTasks(int filterType) {
-        TaskListFragmentDirections.ActionFilterTask action =
-                TaskListFragmentDirections.actionFilterTask();
-        action.setFilerType(filterType);
-        navController.navigate(action);
+        int destID = navController.getCurrentDestination().getId();
+        switch (destID) {
+            case R.id.taskListFragment:
+                TaskListFragmentDirections.ActionFilterTask action =
+                        TaskListFragmentDirections.actionFilterTask();
+                action.setFilerType(filterType);
+                navController.navigate(action);
+                break;
+            case R.id.addTaskFragment:
+                AddEditTaskFragmentDirections.ActionSaveTask action1 =
+                        AddEditTaskFragmentDirections.actionSaveTask();
+                action1.setFilerType(filterType);
+                navController.navigate(action1);
+                break;
+            case R.id.addClassFragment:
+                AddClassFragmentDirections.ActionClassAdded action2 =
+                        AddClassFragmentDirections.actionClassAdded();
+                action2.setFilerType(filterType);
+                navController.navigate(action2);
+                break;
+            case R.id.taskDetailFragment:
+                TaskDetailFragmentDirections.ActionBackToList action3 =
+                        TaskDetailFragmentDirections.actionBackToList();
+                action3.setFilerType(filterType);
+                navController.navigate(action3);
+                break;
+            case R.id.statisticsFragment:
+
+        }
+
     }
 
     private void taskDetail(long taskID) {

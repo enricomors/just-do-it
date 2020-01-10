@@ -55,7 +55,11 @@
         android:id="@+id/statisticsFragment"
         android:name="com.example.justdoit.view.StatisticsFragment"
         android:label="fragment_statistics"
-        tools:layout="@layout/fragment_statistics" />
+        tools:layout="@layout/fragment_statistics" >
+        <action
+            android:id="@+id/action_backToList"
+            app:destination="@id/taskListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addClassFragment"
         android:name="com.example.justdoit.view.AddClassFragment"

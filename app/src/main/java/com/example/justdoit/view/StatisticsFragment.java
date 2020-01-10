@@ -18,6 +18,11 @@ import android.widget.TextView;
 import com.example.justdoit.R;
 import com.example.justdoit.model.Task;
 import com.example.justdoit.viewmodel.TaskViewModel;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.w3c.dom.Text;
 
@@ -32,27 +37,33 @@ import butterknife.ButterKnife;
  */
 public class StatisticsFragment extends Fragment {
 
-    @BindView(R.id.text_view_active)
-    TextView textViewActive;
-
-    @BindView(R.id.text_view_completed)
-    TextView textViewCompleted;
-
-    @BindView(R.id.active_number)
-    TextView textViewActiveNumber;
-
-    @BindView(R.id.completed_number)
-    TextView textViewCompletedNumber;
-
-    @BindView(R.id.text_view_all)
-    TextView textViewAll;
-
-    @BindView(R.id.text_view_all_number)
-    TextView textViewAllNumber;
 
     private TaskViewModel taskViewModel;
+
     private int activeNum;
     private int completeNum;
+    private int ongoingNum;
+
+    private List<PieEntry> pieEntries = new ArrayList<>();
+
+    private List<Task> active = new ArrayList<>();
+    private List<Task> completed = new ArrayList<>();
+    private List<Task> ongoing = new ArrayList<>();
+
+    @BindView(R.id.tw_all_value)
+    TextView textViewAllNumber;
+
+    @BindView(R.id.tv_active)
+    TextView textViewActive;
+
+    @BindView(R.id.tv_completed)
+    TextView textViewCompleted;
+
+    @BindView(R.id.tv_ongoing)
+    TextView textViewOngoing;
+
+    @BindView(R.id.pie_chart)
+    PieChart chart;
 
     public StatisticsFragment() {
         // Required empty public constructor
@@ -65,19 +76,41 @@ public class StatisticsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
         ButterKnife.bind(this, view);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        PieDataSet dataSet = new PieDataSet(pieEntries, "Tasks data");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieData data = new PieData(dataSet);
+
+        chart.setData(data);
+
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         taskViewModel.getAllTasks().observe(this, tasks -> {
             textViewAllNumber.setText(String.valueOf(tasks.size()));
         });
-        taskViewModel.getActiveTasks().observe(this, tasks -> {
-            textViewActiveNumber.setText(String.valueOf(tasks.size()));
-            activeNum = tasks.size();
-        });
-        taskViewModel.getCompletedTasks().observe(this, tasks -> {
-            textViewCompletedNumber.setText(String.valueOf(tasks.size()));
-            completeNum = tasks.size();
+
+        taskViewModel.getOngoingTasks().observe(this, tasks -> {
+            pieEntries.add(new PieEntry((float) tasks.size(), "Ongoing"));
+            chart.notifyDataSetChanged();
+            chart.invalidate();
         });
 
-        return view;
+        taskViewModel.getActiveTasks().observe(this, tasks -> {
+            pieEntries.add(new PieEntry((float) tasks.size(), "Active"));
+            chart.notifyDataSetChanged();
+            chart.invalidate();
+        });
+
+        taskViewModel.getCompletedTasks().observe(this, tasks -> {
+            pieEntries.add(new PieEntry((float) tasks.size(), "Complete"));
+            completeNum = tasks.size();
+            chart.notifyDataSetChanged();
+            chart.invalidate();
+        });
     }
 }
