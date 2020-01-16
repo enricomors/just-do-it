@@ -29,7 +29,9 @@ public abstract class TaskDatabase extends RoomDatabase {
         return instance;
     }
 
+    // callback to populate the database w/ the default classes
     private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
+        // called when the database is created for the first time
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
