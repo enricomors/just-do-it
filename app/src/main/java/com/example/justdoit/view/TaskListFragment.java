@@ -91,8 +91,6 @@ public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTas
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        classNames.clear();
-
         fabAdd.setOnClickListener(v -> onAddTask());
 
         btnFilter.setOnClickListener(v -> filterTasks(classFilter, priorityFilter));
@@ -163,6 +161,7 @@ public class  TaskListFragment extends Fragment implements TaskListAdapter.OnTas
         spinnerClass.setAdapter(classAdapter);
 
         viewModelClass.getAllClasses().observe(this, taskClasses -> {
+            classNames.clear();
             for (TaskClass taskClass : taskClasses) {
                 classNames.add(taskClass.getName());
             }
